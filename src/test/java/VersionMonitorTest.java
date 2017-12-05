@@ -1,21 +1,22 @@
 package test.java;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class VersionMonitorTest
 {
-
-	@org.junit.jupiter.api.Test
+	@Test
 	void getVersion()
 	{
 	}
 
-	@org.junit.jupiter.api.Test
+	@Test
 	void inc()
 	{
 	}
 
-	@org.junit.jupiter.api.Test
+	@Test
 	void await()
 	{
 	}
