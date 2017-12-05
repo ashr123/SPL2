@@ -39,7 +39,6 @@ public class Promise<T>
 		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
-
 	/**
 	 * resolve this promise object - from now on, any call to the method
 	 * {@link #get()} should return the given value
@@ -48,7 +47,7 @@ public class Promise<T>
 	 * resolved via the {@link #subscribe(callback)} method should
 	 * be executed before this method returns
 	 *
-	 * @param value - the value to resolve this promise object with
+	 * @param value the value to resolve this promise object with
 	 * @throws IllegalStateException in the case where this object is already resolved
 	 */
 	public void resolve(T value)
@@ -70,6 +69,12 @@ public class Promise<T>
 	 * @param callback the callback to be called when the promise object is resolved
 	 */
 	public void subscribe(callback callback)
+	{
+		//TODO: replace method body with real implementation
+		throw new UnsupportedOperationException("Not Implemented Yet.");
+	}
+
+	public int getNumOfSubscribers()
 	{
 		//TODO: replace method body with real implementation
 		throw new UnsupportedOperationException("Not Implemented Yet.");
