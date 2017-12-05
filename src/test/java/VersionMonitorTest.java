@@ -1,8 +1,9 @@
 package test.java;
 
 import bgu.spl.a2.VersionMonitor;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class VersionMonitorTest
 {
@@ -10,9 +11,9 @@ public class VersionMonitorTest
 	public void getVersion()
 	{
 		VersionMonitor versionMonitor=new VersionMonitor();
-		Assert.assertEquals(0, versionMonitor.getVersion());
+		assertEquals(0, versionMonitor.getVersion());
 		versionMonitor.inc();
-		Assert.assertEquals(1, versionMonitor.getVersion());
+		assertEquals(1, versionMonitor.getVersion());
 	}
 
 	@Test
@@ -21,7 +22,7 @@ public class VersionMonitorTest
 		VersionMonitor versionMonitor=new VersionMonitor();
 		int version=versionMonitor.getVersion();
 		versionMonitor.inc();
-		Assert.assertEquals(version+1, versionMonitor.getVersion());
+		assertEquals(version+1, versionMonitor.getVersion());
 	}
 
 	@Test
@@ -38,8 +39,8 @@ public class VersionMonitorTest
 			                         {
 			                         }
 		                         });
-		Assert.assertEquals(Thread.State.WAITING, thread.getState());
+		assertEquals(Thread.State.WAITING, thread.getState());
 		versionMonitor.inc();
-		Assert.assertNotEquals(Thread.State.WAITING, thread.getState());
+		assertNotEquals(Thread.State.WAITING, thread.getState());
 	}
 }

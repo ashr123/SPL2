@@ -1,8 +1,9 @@
 package test.java;
 
 import bgu.spl.a2.Promise;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class PromiseTest
 {
@@ -13,18 +14,18 @@ public class PromiseTest
 		try
 		{
 			p.get();
-			Assert.fail();
+			fail();
 		}
 		catch (IllegalStateException e)
 		{
 			try
 			{
 				p.resolve(5);
-				Assert.assertEquals((int)p.get(), 5);
+				assertEquals((int)p.get(), 5);
 			}
 			catch (IllegalStateException e1)
 			{
-				Assert.fail();
+				fail();
 			}
 		}
 	}
@@ -33,9 +34,9 @@ public class PromiseTest
 	public void isResolved()
 	{
 		Promise<Integer> promise = new Promise<>();
-		Assert.assertFalse(promise.isResolved());
+		assertFalse(promise.isResolved());
 		promise.resolve(6);
-		Assert.assertTrue(promise.isResolved());
+		assertTrue(promise.isResolved());
 	}
 
 	@Test
@@ -46,26 +47,26 @@ public class PromiseTest
 			Promise<Integer> promise=new Promise<>();
 			for (int i=0; i<10; i++)
 				promise.subscribe(() -> {});
-			Assert.assertEquals(10, promise.getNumOfSubscribers());
+			assertEquals(10, promise.getNumOfSubscribers());
 			promise.resolve(5);
 			try
 			{
 				promise.resolve(6);
-				Assert.fail();
+				fail();
 			}
 			catch (IllegalStateException e)
 			{
-				Assert.assertEquals(5, (int)promise.get());
-				Assert.assertEquals(0, promise.getNumOfSubscribers());
+				assertEquals(5, (int)promise.get());
+				assertEquals(0, promise.getNumOfSubscribers());
 			}
 			catch (Exception e)
 			{
-				Assert.fail();
+				fail();
 			}
 		}
 		catch (Exception e)
 		{
-			Assert.fail();
+			fail();
 		}
 	}
 
@@ -75,10 +76,10 @@ public class PromiseTest
 		Promise<Integer> promise=new Promise<>();
 		for (int i=0; i<10; i++)
 			promise.subscribe(() -> {});
-		Assert.assertEquals(10, promise.getNumOfSubscribers());
+		assertEquals(10, promise.getNumOfSubscribers());
 		promise.resolve(5);
-		Assert.assertEquals(0, promise.getNumOfSubscribers());
+		assertEquals(0, promise.getNumOfSubscribers());
 		promise.subscribe(() -> {});
-		Assert.assertEquals(0, promise.getNumOfSubscribers());
+		assertEquals(0, promise.getNumOfSubscribers());
 	}
 }
