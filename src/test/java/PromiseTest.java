@@ -1,4 +1,4 @@
-package test.java;
+//package test.java;
 
 import bgu.spl.a2.Promise;
 import org.junit.Test;
@@ -33,9 +33,16 @@ public class PromiseTest
 	@Test
 	public void isResolved()
 	{
-		Promise<Integer> promise = new Promise<>();
+		Promise<Integer> promise=new Promise<>();
 		assertFalse(promise.isResolved());
-		promise.resolve(6);
+		try
+		{
+			promise.resolve(6);
+		}
+		catch (IllegalStateException e)
+		{
+			fail();
+		}
 		assertTrue(promise.isResolved());
 	}
 
@@ -46,7 +53,8 @@ public class PromiseTest
 		{
 			Promise<Integer> promise=new Promise<>();
 			for (int i=0; i<10; i++)
-				promise.subscribe(() -> {});
+				promise.subscribe(() -> {
+				});
 			assertEquals(10, promise.getNumOfSubscribers());
 			promise.resolve(5);
 			try
@@ -75,11 +83,20 @@ public class PromiseTest
 	{
 		Promise<Integer> promise=new Promise<>();
 		for (int i=0; i<10; i++)
-			promise.subscribe(() -> {});
+			promise.subscribe(() -> {
+			});
 		assertEquals(10, promise.getNumOfSubscribers());
-		promise.resolve(5);
+		try
+		{
+			promise.resolve(5);
+		}
+		catch (IllegalStateException e)
+		{
+			fail();
+		}
 		assertEquals(0, promise.getNumOfSubscribers());
-		promise.subscribe(() -> {});
+		promise.subscribe(() -> {
+		});
 		assertEquals(0, promise.getNumOfSubscribers());
 	}
 }

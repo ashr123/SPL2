@@ -47,7 +47,7 @@ public class Promise<T>
 	 * resolved via the {@link #subscribe(callback)} method should
 	 * be executed before this method returns
 	 *
-	 * @param value the value to resolve this promise object with
+	 * @param value - the value to resolve this promise object with
 	 * @throws IllegalStateException in the case where this object is already resolved
 	 */
 	public void resolve(T value)
@@ -76,7 +76,6 @@ public class Promise<T>
 
 	public int getNumOfSubscribers()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		return 0;
 	}
 }

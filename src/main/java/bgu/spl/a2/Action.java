@@ -21,7 +21,6 @@ public abstract class Action<R>
 	 */
 	protected abstract void start();
 
-
 	/**
 	 * start/continue handling the action
 	 * <p>
@@ -33,7 +32,7 @@ public abstract class Action<R>
 	 * public/private/protected
 	 */
 	/*package*/
-	final void handle()
+	final void handle(ActorThreadPool pool, String actorId, PrivateState actorState)
 	{
 	}
 

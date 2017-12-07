@@ -1,9 +1,10 @@
-package test.java;
+//package test.java;
 
 import bgu.spl.a2.VersionMonitor;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class VersionMonitorTest
 {
@@ -35,7 +36,7 @@ public class VersionMonitorTest
 			                         {
 				                         versionMonitor.await(0);
 			                         }
-			                         catch (InterruptedException e)
+			                         catch (InterruptedException ignored)
 			                         {
 			                         }
 		                         });

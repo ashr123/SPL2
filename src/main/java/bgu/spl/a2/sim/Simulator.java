@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Simulator
 {
+
+
 	public static ActorThreadPool actorThreadPool;
 
 	/**
@@ -47,9 +49,11 @@ public class Simulator
 		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
+
 	public static int main(String[] args)
 	{
 		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		return 0;
 	}
 }
