@@ -8,15 +8,13 @@ package bgu.spl.a2.sim;
 import bgu.spl.a2.ActorThreadPool;
 import bgu.spl.a2.PrivateState;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.HashMap;
 
 /**
  * A class describing the simulator for part 2 of the assignment
  */
 public class Simulator
 {
-
-
 	public static ActorThreadPool actorThreadPool;
 
 	/**
@@ -43,17 +41,15 @@ public class Simulator
 	 * shut down the simulation
 	 * returns list of private states
 	 */
-	public static ConcurrentLinkedQueue<PrivateState> end()
+	public static HashMap<String, PrivateState> end()
 	{
 		//TODO: replace method body with real implementation
 		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
-
 	public static int main(String[] args)
 	{
 		//TODO: replace method body with real implementation
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
-		return 0;
+		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 }

@@ -76,6 +76,7 @@ public class Promise<T>
 
 	public int getNumOfSubscribers()
 	{
-		return 0;
+		//TODO: replace method body with real implementation
+		return 0;//numOfSubscribers;
 	}
 }
