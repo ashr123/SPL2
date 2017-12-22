@@ -1,5 +1,6 @@
 package bgu.spl.a2;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
 public abstract class PrivateState
 {
 	// holds the actions' name what were executed
-	private List<String> history;
+	private List<String> history=new LinkedList<>();
 
 	public List<String> getLogger()
 	{
@@ -22,9 +23,8 @@ public abstract class PrivateState
 	 *
 	 * @param actionName the name of the action
 	 */
-	public void addRecord(String actionName)
+	public synchronized void addRecord(String actionName)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		history.add(actionName);
 	}
 }
