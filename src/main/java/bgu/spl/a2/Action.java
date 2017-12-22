@@ -1,6 +1,9 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * an abstract class that represents an action that may be executed using the
@@ -15,6 +18,10 @@ import java.util.Collection;
  */
 public abstract class Action<R>
 {
+	HashMap <String, PrivateState> actorPrivateStates=new HashMap<>();
+	HashMap <String, AtomicBoolean> actorIsBlocked=new HashMap<>();
+	HashMap <String, Queue<Action<?>>> actorQueue=new HashMap<>();
+
 	/**
 	 * start handling the action - note that this method is protected, a thread
 	 * cannot call it directly.
@@ -43,7 +50,7 @@ public abstract class Action<R>
 	 * Implementors note: make sure that the callback is running only once when
 	 * all the given actions completed.
 	 *
-	 * @param actions
+	 * @param actions a list of sub-actions
 	 * @param callback the callback to execute once all the results are resolved
 	 */
 	protected final void then(Collection<? extends Action<?>> actions, callback callback)
@@ -99,7 +106,7 @@ public abstract class Action<R>
 	/**
 	 * set action's name
 	 *
-	 * @param actionName
+	 * @param actionName the new name
 	 */
 	public void setActionName(String actionName)
 	{

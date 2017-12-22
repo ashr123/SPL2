@@ -1,6 +1,8 @@
 package bgu.spl.a2;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * represents an actor thread pool - to understand what this class does please
@@ -14,6 +16,8 @@ import java.util.Map;
  */
 public class ActorThreadPool
 {
+	ExecutorService executorService;
+
 	/**
 	 * creates a {@link ActorThreadPool} which has nthreads. Note, threads
 	 * should not get started until calling to the {@link #start()} method.
@@ -28,7 +32,8 @@ public class ActorThreadPool
 	public ActorThreadPool(int nthreads)
 	{
 		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		ExecutorService executorService=Executors.newFixedThreadPool(nthreads);
 	}
 
 	/**
@@ -62,7 +67,7 @@ public class ActorThreadPool
 	 * @param actorId    corresponding actor's id
 	 * @param actorState actor's private state (actor's information)
 	 */
-	public void submit(Action<?> action, String actorId, PrivateState actorState)
+	public synchronized void submit(Action<?> action, String actorId, PrivateState actorState)
 	{
 		// TODO: replace method body with real implementation
 		throw new UnsupportedOperationException("Not Implemented Yet.");

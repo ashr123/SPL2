@@ -1,5 +1,9 @@
 package bgu.spl.a2;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * this class represents a deferred result i.e., an object that eventually will
  * be resolved to hold a result of some operation, the class allows for getting
@@ -16,16 +20,22 @@ package bgu.spl.a2;
  */
 public class Promise<T>
 {
+	private List<callback> callbackList=new LinkedList<>();
+	private AtomicBoolean isResolved=new AtomicBoolean();
+	private T result;
+
 	/**
 	 * @return the resolved value if such exists (i.e., if this object has been
 	 * {@link #resolve(java.lang.Object)}ed
 	 * @throws IllegalStateException in the case where this method is called and this object is
 	 *                               not yet resolved
 	 */
-	public T get()
+	public synchronized T get()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (isResolved.get())
+			return result;
+		throw new IllegalStateException("This object is not yet resolved!");
 	}
 
 	/**
@@ -35,25 +45,28 @@ public class Promise<T>
 	 */
 	public boolean isResolved()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		return isResolved.get();
 	}
 
 	/**
 	 * resolve this promise object - from now on, any call to the method
-	 * {@link #get()} should return the given value
+	 * {@link #get()} should return the given value.
 	 * <p>
 	 * Any callbacks that were registered to be notified when this object is
 	 * resolved via the {@link #subscribe(callback)} method should
-	 * be executed before this method returns
+	 * be executed before this method returns.
 	 *
 	 * @param value - the value to resolve this promise object with
 	 * @throws IllegalStateException in the case where this object is already resolved
 	 */
-	public void resolve(T value)
+	public synchronized void resolve(T value)//synchronized?
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		result = value;
+		isResolved.set(true);
+		for (callback callback : callbackList)
+			callback.call();
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
 	/**
@@ -68,15 +81,14 @@ public class Promise<T>
 	 *
 	 * @param callback the callback to be called when the promise object is resolved
 	 */
-	public void subscribe(callback callback)
+	public synchronized void subscribe(callback callback)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		callbackList.add(callback);
 	}
 
 	public int getNumOfSubscribers()
 	{
-		//TODO: replace method body with real implementation
-		return 0;//numOfSubscribers;
+		return callbackList.size();
 	}
 }

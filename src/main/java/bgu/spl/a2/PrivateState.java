@@ -20,7 +20,7 @@ public abstract class PrivateState
 	/**
 	 * add an action to the records
 	 *
-	 * @param actionName
+	 * @param actionName the name of the action
 	 */
 	public void addRecord(String actionName)
 	{
