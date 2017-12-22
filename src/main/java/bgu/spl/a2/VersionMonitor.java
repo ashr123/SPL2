@@ -20,21 +20,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class VersionMonitor
 {
-	AtomicInteger ver=new AtomicInteger(0);
+	private AtomicInteger ver=new AtomicInteger();
 
 	public int getVersion()
 	{
 		return ver.get();
 	}
 
-	public void inc()
+	public synchronized void inc()
 	{
 		ver.incrementAndGet();
-		ver.notifyAll();
+		notifyAll();
 	}
 
-	public void await(int version) throws InterruptedException
+	public synchronized void await(int version) throws InterruptedException
 	{
-		ver.wait();
+		while (ver.get()==version)
+			wait();
 	}
 }

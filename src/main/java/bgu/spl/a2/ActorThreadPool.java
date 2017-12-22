@@ -1,6 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,7 +17,8 @@ import java.util.concurrent.Executors;
  */
 public class ActorThreadPool
 {
-	ExecutorService executorService;
+	private ExecutorService executorService;
+	private final Map<String, PrivateState> actors=new ConcurrentHashMap<>();
 
 	/**
 	 * creates a {@link ActorThreadPool} which has nthreads. Note, threads
@@ -31,7 +33,6 @@ public class ActorThreadPool
 	 */
 	public ActorThreadPool(int nthreads)
 	{
-		// TODO: replace method body with real implementation
 		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		ExecutorService executorService=Executors.newFixedThreadPool(nthreads);
 	}
@@ -43,8 +44,8 @@ public class ActorThreadPool
 	 */
 	public Map<String, PrivateState> getActors()
 	{
-		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		return actors;
 	}
 
 	/**

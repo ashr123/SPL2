@@ -30,7 +30,7 @@ public class Promise<T>
 	 * @throws IllegalStateException in the case where this method is called and this object is
 	 *                               not yet resolved
 	 */
-	public synchronized T get()
+	public T get()
 	{
 		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		if (isResolved.get())
@@ -60,7 +60,7 @@ public class Promise<T>
 	 * @param value - the value to resolve this promise object with
 	 * @throws IllegalStateException in the case where this object is already resolved
 	 */
-	public synchronized void resolve(T value)//synchronized?
+	public synchronized void resolve(T value)
 	{
 		result = value;
 		isResolved.set(true);
@@ -84,7 +84,10 @@ public class Promise<T>
 	public synchronized void subscribe(callback callback)
 	{
 		//throw new UnsupportedOperationException("Not Implemented Yet.");
-		callbackList.add(callback);
+		if (isResolved.get())
+			callback.call();
+		else
+			callbackList.add(callback);
 	}
 
 	public int getNumOfSubscribers()

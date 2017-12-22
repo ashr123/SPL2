@@ -1,8 +1,9 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Queue;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -18,9 +19,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class Action<R>
 {
-	HashMap <String, PrivateState> actorPrivateStates=new HashMap<>();
-	HashMap <String, AtomicBoolean> actorIsBlocked=new HashMap<>();
-	HashMap <String, Queue<Action<?>>> actorQueue=new HashMap<>();
+	private final Map<String, PrivateState> actorPrivateStates=new ConcurrentHashMap<>();
+	private final Map<String, AtomicBoolean> actorIsBlocked=new ConcurrentHashMap<>();
+	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
+	private ActorThreadPool actorThreadPool;
+	private String actorID;
+	private PrivateState actorState;
 
 	/**
 	 * start handling the action - note that this method is protected, a thread
@@ -41,6 +45,9 @@ public abstract class Action<R>
 	/*package*/
 	final void handle(ActorThreadPool pool, String actorId, PrivateState actorState)
 	{
+		actorThreadPool=pool;
+		actorID=actorId;
+		this.actorState = actorState;
 	}
 
 	/**
