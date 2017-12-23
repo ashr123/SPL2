@@ -24,7 +24,7 @@ public class ActorThreadPool
 	private final Thread[] threads;
 	private final VersionMonitor versionMonitor=new VersionMonitor();
 	private final Semaphore semaphoreForSubmit=new Semaphore(1, true);
-	private final AtomicBoolean isStoped=new AtomicBoolean();
+	private final AtomicBoolean isStopped=new AtomicBoolean();
 
 	/**
 	 * creates a {@link ActorThreadPool} which has nThreads. Note, threads
@@ -42,7 +42,7 @@ public class ActorThreadPool
 		threads=new Thread[nThreads];
 		for (int i=0; i<nThreads; i++)
 			threads[i]=new Thread(() -> {
-				while (!isStoped.get())
+				while (!isStopped.get())
 				{
 					int currVer=versionMonitor.getVersion();
 					boolean flag=false;
@@ -139,7 +139,7 @@ public class ActorThreadPool
 //		for (Thread thread : threads)
 //			thread.interrupt();
 		System.out.println("Thread pool is stopping...");
-		isStoped.set(true);
+		isStopped.set(true);
 		for (Thread thread : threads)
 			thread.join();
 		System.out.println("Thread pool has been shutdown!!!");
@@ -150,6 +150,7 @@ public class ActorThreadPool
 	 */
 	public void start()
 	{
+		isStopped.set(false);
 		for (Thread thread : threads)
 			thread.start();
 	}

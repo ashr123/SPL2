@@ -40,6 +40,7 @@ public class VersionMonitorTest
 			                         {
 			                         }
 		                         });
+		thread.start();
 		assertEquals(Thread.State.WAITING, thread.getState());
 		versionMonitor.inc();
 		assertNotEquals(Thread.State.WAITING, thread.getState());
