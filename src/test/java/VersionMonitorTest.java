@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class  VersionMonitorTest
+public class VersionMonitorTest
 {
 	@Test
 	public void getVersion()

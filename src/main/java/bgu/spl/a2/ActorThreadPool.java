@@ -2,8 +2,10 @@ package bgu.spl.a2;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * represents an actor thread pool - to understand what this class does please
@@ -17,24 +19,28 @@ import java.util.concurrent.Executors;
  */
 public class ActorThreadPool
 {
-	private ExecutorService executorService;
 	private final Map<String, PrivateState> actors=new ConcurrentHashMap<>();
+	private final Map<String, AtomicBoolean> actorIsBlocked=new ConcurrentHashMap<>();
+	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
+	private Thread[] threads;
 
 	/**
-	 * creates a {@link ActorThreadPool} which has nthreads. Note, threads
+	 * creates a {@link ActorThreadPool} which has nThreads. Note, threads
 	 * should not get started until calling to the {@link #start()} method.
 	 * <p>
 	 * Implementors note: you may not add other constructors to this class nor
 	 * you allowed to add any other parameter to this constructor - changing
 	 * this may cause automatic tests to fail..
 	 *
-	 * @param nthreads the number of threads that should be started by this thread
+	 * @param nThreads the number of threads that should be started by this thread
 	 *                 pool
 	 */
-	public ActorThreadPool(int nthreads)
+	public ActorThreadPool(int nThreads)
 	{
 		//throw new UnsupportedOperationException("Not Implemented Yet.");
-		ExecutorService executorService=Executors.newFixedThreadPool(nthreads);
+		threads=new Thread[nThreads];
+		for (int i=0; i<nThreads; i++)
+			threads[i]=new Thread();
 	}
 
 	/**

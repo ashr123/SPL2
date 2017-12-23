@@ -19,9 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public abstract class Action<R>
 {
-	private final Map<String, PrivateState> actorPrivateStates=new ConcurrentHashMap<>();
-	private final Map<String, AtomicBoolean> actorIsBlocked=new ConcurrentHashMap<>();
-	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
 	private ActorThreadPool actorThreadPool;
 	private String actorID;
 	private PrivateState actorState;
@@ -47,7 +44,7 @@ public abstract class Action<R>
 	{
 		actorThreadPool=pool;
 		actorID=actorId;
-		this.actorState = actorState;
+		this.actorState=actorState;
 	}
 
 	/**
@@ -57,7 +54,7 @@ public abstract class Action<R>
 	 * Implementors note: make sure that the callback is running only once when
 	 * all the given actions completed.
 	 *
-	 * @param actions a list of sub-actions
+	 * @param actions  a list of sub-actions
 	 * @param callback the callback to execute once all the results are resolved
 	 */
 	protected final void then(Collection<? extends Action<?>> actions, callback callback)

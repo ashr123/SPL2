@@ -57,12 +57,12 @@ public class Promise<T>
 	 * resolved via the {@link #subscribe(callback)} method should
 	 * be executed before this method returns.
 	 *
-	 * @param value - the value to resolve this promise object with
+	 * @param value the value to resolve this promise object with
 	 * @throws IllegalStateException in the case where this object is already resolved
 	 */
 	public synchronized void resolve(T value)
 	{
-		result = value;
+		result=value;
 		isResolved.set(true);
 		for (callback callback : callbackList)
 			callback.call();
