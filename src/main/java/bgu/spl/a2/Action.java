@@ -69,9 +69,8 @@ public abstract class Action<R>
 			action.getResult().subscribe(() -> {
 				int currPerformed;
 				do
-				{
 					currPerformed=actionsPerformed.get();
-				} while (!actionsPerformed.compareAndSet(currPerformed, currPerformed+1));
+				while (!actionsPerformed.compareAndSet(currPerformed, currPerformed+1));
 				if (actionsPerformed.get()==actions.size())
 					actorThreadPool.submit(this, actorID, actorState);
 			});

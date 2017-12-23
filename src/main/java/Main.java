@@ -10,32 +10,38 @@ public class Main
 	public static void main(String[] args) throws InterruptedException
 	{
 		ActorThreadPool pool=new ActorThreadPool(1);
-		pool.submit(new Action<Integer>()
+		Action action1=new Action<Integer>()
 		{
 			@Override
 			protected void start()
 			{
 				System.out.println("Hi I am action 1 :)");
-				List<Action<Void>> actions=new ArrayList<>();
-				Action action=new Action()
+
+				Action<Integer> action2=new Action<Integer>()
 				{
 					@Override
 					protected void start()
 					{
 						System.out.println("Hi I am action 1.2");
+						setActionName("action 2");
+						complete(2);
 					}
 				};
-				actions.add(action);
-				sendMessage(action,"actor 2", new PrivateState()
+
+				List<Action<Integer>> actions=new ArrayList<>();
+				sendMessage(action2, "actor 2", new PrivateState()
 				{
 				});
-				then(actions,()->{
+				actions.add(action2);
+				then(actions, () -> {
 					System.out.println("Hi I am action 1 Again:))))))");
-					complete(2);
+					complete(1);
 				});
 
 			}
-		}, "Actor1", new PrivateState()
+		};
+		action1.setActionName("action 1");
+		pool.submit(action1, "Actor1", new PrivateState()
 		{
 		});
 		pool.start();
