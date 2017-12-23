@@ -1,7 +1,8 @@
 package bgu.spl.a2;
 
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -20,7 +21,7 @@ public class ActorThreadPool
 	private final Map<String, AtomicBoolean> actorIsNotBlocked=new ConcurrentHashMap<>();
 	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
 	private final Thread[] threads;
-	Semaphore
+	private final VersionMonitor versionMonitor=new VersionMonitor();
 
 	/**
 	 * creates a {@link ActorThreadPool} which has nThreads. Note, threads
@@ -39,14 +40,30 @@ public class ActorThreadPool
 		threads=new Thread[nThreads];
 		for (int i=0; i<nThreads; i++)
 			threads[i]=new Thread(() -> {
-				for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
+				while (true)
 				{
-					if (/*actorIsNotBlocked.get(entry.getKey()).get()*/actorIsNotBlocked.get(entry.getKey()).compareAndSet(false, true))
+					boolean flag=false;
+					for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
 					{
-						Action<?> action=actorQueue.get(entry.getKey()).poll();
-						if (action!=null)
-							action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
-						actorIsNotBlocked.get(entry.getKey()).set(true);
+						if (/*actorIsNotBlocked.get(entry.getKey()).get()*/actorIsNotBlocked.get(entry.getKey())
+						                                                                    .compareAndSet(false, true))
+						{
+							Action<?> action=actorQueue.get(entry.getKey()).poll();
+							if (action!=null)
+							{
+								flag=true;
+								action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
+							}
+							actorIsNotBlocked.get(entry.getKey()).set(true);
+						}
+					}
+					if(!flag)
+					{
+						try
+						{
+							versionMonitor.await(versionMonitor.getVersion());
+						}
+						catch (InterruptedException ignored) { }
 					}
 				}
 			});
