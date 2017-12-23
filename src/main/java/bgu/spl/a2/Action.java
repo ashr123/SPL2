@@ -1,7 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * an abstract class that represents an action that may be executed using the
@@ -21,6 +21,7 @@ public abstract class Action<R>
 	private PrivateState actorState;
 	private String actionName;
 	private Promise<R> promise;
+	private callback nextAction;//Create's in start()
 
 	/**
 	 * start handling the action - note that this method is protected, a thread
@@ -58,20 +59,29 @@ public abstract class Action<R>
 	 */
 	protected final void then(Collection<? extends Action<?>> actions, callback callback)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		final AtomicInteger actionsPerformed=new AtomicInteger();
+		for (Action<?> action : actions)
+			action.getResult().subscribe(() -> {
+				int currPerformed;
+				do
+				{
+					currPerformed=actionsPerformed.get();
+				} while (!actionsPerformed.compareAndSet(currPerformed, currPerformed+1));
+				if (actionsPerformed.get()==actions.size())
+					callback.call();//Adds this action back to his actor
+			});
 	}
 
 	/**
 	 * resolve the internal result - should be called by the action derivative
 	 * once it is done.
 	 *
-	 * @param result - the action calculated result
+	 * @param result the action calculated result
 	 */
 	protected final void complete(R result)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (!promise.isResolved())
+			promise.resolve(result);
 	}
 
 	/**
@@ -79,8 +89,7 @@ public abstract class Action<R>
 	 */
 	public final Promise<R> getResult()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		return promise;
 	}
 
 	/**

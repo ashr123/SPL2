@@ -110,7 +110,9 @@ public class ActorThreadPool
 			{
 				semaphoreForSubmit.acquire();
 			}
-			catch (InterruptedException ignored){}
+			catch (InterruptedException ignored)
+			{
+			}//TODO think about
 			if (!getActors().containsKey(actorId))
 			{
 				getActors().put(actorId, actorState);
@@ -136,10 +138,11 @@ public class ActorThreadPool
 	{
 //		for (Thread thread : threads)
 //			thread.interrupt();
+		System.out.println("Thread pool is stopping...");
 		isStoped.set(true);
-		for (Thread thread: threads)
+		for (Thread thread : threads)
 			thread.join();
-		System.out.print("Thread pool has been shutdown");
+		System.out.println("Thread pool has been shutdown!!!");
 	}
 
 	/**

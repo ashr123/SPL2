@@ -44,7 +44,6 @@ public class Promise<T>
 	 */
 	public boolean isResolved()
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		return isResolved.get();
 	}
 
