@@ -55,6 +55,8 @@ public class ActorThreadPool
 								action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
 							}
 							actorIsNotBlocked.get(entry.getKey()).set(true);
+							if (flag)
+								versionMonitor.inc();
 						}
 					}
 					if(!flag)
