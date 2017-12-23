@@ -122,8 +122,8 @@ public class ActorThreadPool
 	 */
 	public void shutdown() throws InterruptedException
 	{
-		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		for(Thread thread:threads)
+			thread.interrupt();
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ActorThreadPool
 	 */
 	public void start()
 	{
-		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		for (Thread thread : threads)
+			thread.start();
 	}
 }
