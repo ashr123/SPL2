@@ -47,7 +47,6 @@ public class ActorThreadPool
 					int currVer=versionMonitor.getVersion();
 					boolean flag=false;
 					for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
-					{
 						if (actorIsNotBlocked.get(entry.getKey()).compareAndSet(false, true))
 						{
 							Action<?> action=entry.getValue().poll();
@@ -58,9 +57,7 @@ public class ActorThreadPool
 							}
 							actorIsNotBlocked.get(entry.getKey()).set(false);
 						}
-					}
 					if (!flag)
-					{
 						try
 						{
 							versionMonitor.await(currVer);
@@ -68,7 +65,6 @@ public class ActorThreadPool
 						catch (InterruptedException ignored)
 						{
 						}
-					}
 				}
 			});
 	}
@@ -136,12 +132,12 @@ public class ActorThreadPool
 	 */
 	public void shutdown() throws InterruptedException
 	{
-//		for (Thread thread : threads)
-//			thread.interrupt();
 		System.out.println("Thread pool is stopping...");
 		isStopped.set(true);
+		versionMonitor.inc();
 		for (Thread thread : threads)
-			thread.join();
+			if (thread!=Thread.currentThread())
+				thread.join();
 		System.out.println("Thread pool has been shutdown!!!");
 	}
 

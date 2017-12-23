@@ -9,7 +9,7 @@ public class Main
 {
 	public static void main(String[] args) throws InterruptedException
 	{
-		ActorThreadPool pool=new ActorThreadPool(1);
+		ActorThreadPool pool=new ActorThreadPool(1000);
 		Action action1=new Action<Integer>()
 		{
 			@Override
@@ -36,6 +36,14 @@ public class Main
 				then(actions, () -> {
 					System.out.println("Hi I am action 1 Again:))))))");
 					complete(1);
+					try
+					{
+						pool.shutdown();
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
 				});
 
 			}
