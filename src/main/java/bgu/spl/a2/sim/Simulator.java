@@ -5,6 +5,7 @@
  */
 package bgu.spl.a2.sim;
 
+import bgu.spl.a2.Action;
 import bgu.spl.a2.ActorThreadPool;
 import bgu.spl.a2.PrivateState;
 
@@ -49,7 +50,6 @@ public class Simulator
 
 	public static int main(String[] args)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		return 0;
 	}
 }

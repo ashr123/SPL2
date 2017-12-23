@@ -34,7 +34,7 @@ public class VersionMonitorTest
 		                         {
 			                         try
 			                         {
-				                         versionMonitor.await(0);
+				                         versionMonitor.await(1);
 			                         }
 			                         catch (InterruptedException ignored)
 			                         {
