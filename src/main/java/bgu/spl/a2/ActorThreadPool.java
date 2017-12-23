@@ -1,10 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -20,9 +17,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ActorThreadPool
 {
 	private final Map<String, PrivateState> actors=new ConcurrentHashMap<>();
-	private final Map<String, AtomicBoolean> actorIsBlocked=new ConcurrentHashMap<>();
+	private final Map<String, AtomicBoolean> actorIsNotBlocked=new ConcurrentHashMap<>();
 	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
-	private Thread[] threads;
+	private final Thread[] threads;
+	Semaphore
 
 	/**
 	 * creates a {@link ActorThreadPool} which has nThreads. Note, threads
@@ -40,7 +38,19 @@ public class ActorThreadPool
 		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		threads=new Thread[nThreads];
 		for (int i=0; i<nThreads; i++)
-			threads[i]=new Thread();
+			threads[i]=new Thread(() -> {
+				for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
+				{
+					if (actorIsNotBlocked.get(entry.getKey()).get())
+					{
+						actorIsNotBlocked.get(entry.getKey()).set(false);
+						Action<?> action=actorQueue.get(entry.getKey()).poll();
+						if (action!=null)
+							action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
+						actorIsNotBlocked.get(entry.getKey()).set(true);
+					}
+				}
+			});
 	}
 
 	/**

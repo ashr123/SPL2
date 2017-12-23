@@ -62,11 +62,13 @@ public class Promise<T>
 	 */
 	public synchronized void resolve(T value)
 	{
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (isResolved.get())
+			throw new IllegalStateException("this object is already resolved");
 		result=value;
 		isResolved.set(true);
 		for (callback callback : callbackList)
 			callback.call();
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
 	/**
