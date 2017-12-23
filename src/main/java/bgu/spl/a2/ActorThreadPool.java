@@ -116,7 +116,7 @@ public class ActorThreadPool
 			if (!getActors().containsKey(actorId))
 			{
 				getActors().put(actorId, actorState);
-				actorIsNotBlocked.put(actorId, new AtomicBoolean(true));
+				actorIsNotBlocked.put(actorId, new AtomicBoolean());
 				actorQueue.put(actorId, new ConcurrentLinkedQueue<>());
 			}
 			semaphoreForSubmit.release();

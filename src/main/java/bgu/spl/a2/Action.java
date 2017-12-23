@@ -20,7 +20,7 @@ public abstract class Action<R>
 	private String actorID;
 	private PrivateState actorState;
 	private String actionName;
-	private Promise<R> promise;
+	private Promise<R> promise=new Promise<>();
 	private callback nextAction;//Create's in start()
 
 	/**
