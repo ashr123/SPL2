@@ -3,6 +3,7 @@ package bgu.spl.a2;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -22,6 +23,8 @@ public class ActorThreadPool
 	private final Map<String, ConcurrentLinkedQueue<Action<?>>> actorQueue=new ConcurrentHashMap<>();
 	private final Thread[] threads;
 	private final VersionMonitor versionMonitor=new VersionMonitor();
+	private final Semaphore semaphoreForSubmit=new Semaphore(1, true);
+	private final AtomicBoolean isStoped=new AtomicBoolean();
 
 	/**
 	 * creates a {@link ActorThreadPool} which has nThreads. Note, threads
@@ -39,32 +42,32 @@ public class ActorThreadPool
 		threads=new Thread[nThreads];
 		for (int i=0; i<nThreads; i++)
 			threads[i]=new Thread(() -> {
-				while (true)
+				while (!isStoped.get())
 				{
+					int currVer=versionMonitor.getVersion();
 					boolean flag=false;
 					for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
 					{
-						if (/*actorIsNotBlocked.get(entry.getKey()).get()*/actorIsNotBlocked.get(entry.getKey())
-						                                                                    .compareAndSet(false, true))
+						if (actorIsNotBlocked.get(entry.getKey()).compareAndSet(false, true))
 						{
-							Action<?> action=actorQueue.get(entry.getKey()).poll();
+							Action<?> action=entry.getValue().poll();
 							if (action!=null)
 							{
 								flag=true;
 								action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
 							}
 							actorIsNotBlocked.get(entry.getKey()).set(true);
-							if (flag)
-								versionMonitor.inc();
 						}
 					}
-					if(!flag)
+					if (!flag)
 					{
 						try
 						{
-							versionMonitor.await(versionMonitor.getVersion());
+							versionMonitor.await(currVer);
 						}
-						catch (InterruptedException ignored) { }
+						catch (InterruptedException ignored)
+						{
+						}
 					}
 				}
 			});
@@ -99,13 +102,22 @@ public class ActorThreadPool
 	 * @param actorId    corresponding actor's id
 	 * @param actorState actor's private state (actor's information)
 	 */
-	public synchronized void submit(Action<?> action, String actorId, PrivateState actorState)
+	public void submit(Action<?> action, String actorId, PrivateState actorState)
 	{
 		if (!getActors().containsKey(actorId))
 		{
-			getActors().put(actorId, actorState);
-			actorIsNotBlocked.put(actorId, new AtomicBoolean(true));
-			actorQueue.put(actorId, new ConcurrentLinkedQueue<>());
+			try
+			{
+				semaphoreForSubmit.acquire();
+			}
+			catch (InterruptedException ignored){}
+			if (!getActors().containsKey(actorId))
+			{
+				getActors().put(actorId, actorState);
+				actorIsNotBlocked.put(actorId, new AtomicBoolean(true));
+				actorQueue.put(actorId, new ConcurrentLinkedQueue<>());
+			}
+			semaphoreForSubmit.release();
 		}
 		actorQueue.get(actorId).add(action);
 		versionMonitor.inc();
@@ -122,8 +134,12 @@ public class ActorThreadPool
 	 */
 	public void shutdown() throws InterruptedException
 	{
-		for(Thread thread:threads)
-			thread.interrupt();
+//		for (Thread thread : threads)
+//			thread.interrupt();
+		isStoped.set(true);
+		for (Thread thread: threads)
+			thread.join();
+		System.out.print("Thread pool has been shutdown");
 	}
 
 	/**

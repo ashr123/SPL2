@@ -1,10 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * an abstract class that represents an action that may be executed using the
@@ -22,6 +19,8 @@ public abstract class Action<R>
 	private ActorThreadPool actorThreadPool;
 	private String actorID;
 	private PrivateState actorState;
+	private String actionName;
+	private Promise<R> promise;
 
 	/**
 	 * start handling the action - note that this method is protected, a thread
@@ -103,8 +102,7 @@ public abstract class Action<R>
 	 */
 	public String getActionName()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		return actionName;
 	}
 
 	/**
@@ -114,7 +112,6 @@ public abstract class Action<R>
 	 */
 	public void setActionName(String actionName)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		this.actionName=actionName;
 	}
 }
