@@ -88,8 +88,8 @@ public class ActorThreadPool
 	 */
 	public PrivateState getPrivateState(String actorId)
 	{
-		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		return getActors().get(actorId);
 	}
 
 	/**
@@ -102,8 +102,15 @@ public class ActorThreadPool
 	 */
 	public synchronized void submit(Action<?> action, String actorId, PrivateState actorState)
 	{
-		// TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		//throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (!getActors().containsKey(actorId))
+		{
+			getActors().put(actorId, actorState);
+			actorIsNotBlocked.put(actorId, new AtomicBoolean(true));
+			actorQueue.put(actorId, new ConcurrentLinkedQueue<>());
+		}
+		actorQueue.get(actorId).add(action);
+		versionMonitor.inc();
 	}
 
 	/**
