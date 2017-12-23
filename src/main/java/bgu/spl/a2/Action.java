@@ -45,6 +45,12 @@ public abstract class Action<R>
 		actorThreadPool=pool;
 		actorID=actorId;
 		this.actorState=actorState;
+		if(nextAction==null)
+			start();
+		else
+		{
+			nextAction.call();
+		}
 	}
 
 	/**
