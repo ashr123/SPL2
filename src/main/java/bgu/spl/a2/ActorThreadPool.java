@@ -36,7 +36,6 @@ public class ActorThreadPool
 	 */
 	public ActorThreadPool(int nThreads)
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		threads=new Thread[nThreads];
 		for (int i=0; i<nThreads; i++)
 			threads[i]=new Thread(() -> {
@@ -78,7 +77,6 @@ public class ActorThreadPool
 	 */
 	public Map<String, PrivateState> getActors()
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		return actors;
 	}
 
@@ -90,7 +88,6 @@ public class ActorThreadPool
 	 */
 	public PrivateState getPrivateState(String actorId)
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		return getActors().get(actorId);
 	}
 
@@ -104,7 +101,6 @@ public class ActorThreadPool
 	 */
 	public synchronized void submit(Action<?> action, String actorId, PrivateState actorState)
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		if (!getActors().containsKey(actorId))
 		{
 			getActors().put(actorId, actorState);

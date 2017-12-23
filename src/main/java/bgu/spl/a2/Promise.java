@@ -32,7 +32,6 @@ public class Promise<T>
 	 */
 	public T get()
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		if (isResolved.get())
 			return result;
 		throw new IllegalStateException("This object is not yet resolved!");
@@ -62,7 +61,6 @@ public class Promise<T>
 	 */
 	public synchronized void resolve(T value)
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		if (isResolved.get())
 			throw new IllegalStateException("this object is already resolved");
 		result=value;
@@ -85,7 +83,6 @@ public class Promise<T>
 	 */
 	public synchronized void subscribe(callback callback)
 	{
-		//throw new UnsupportedOperationException("Not Implemented Yet.");
 		if (isResolved.get())
 			callback.call();
 		else
