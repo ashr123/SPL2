@@ -41,9 +41,8 @@ public class ActorThreadPool
 			threads[i]=new Thread(() -> {
 				for (Map.Entry<String, ConcurrentLinkedQueue<Action<?>>> entry : actorQueue.entrySet())
 				{
-					if (actorIsNotBlocked.get(entry.getKey()).get())
+					if (/*actorIsNotBlocked.get(entry.getKey()).get()*/actorIsNotBlocked.get(entry.getKey()).compareAndSet(false, true))
 					{
-						actorIsNotBlocked.get(entry.getKey()).set(false);
 						Action<?> action=actorQueue.get(entry.getKey()).poll();
 						if (action!=null)
 							action.handle(this, entry.getKey(), getPrivateState(entry.getKey()));
