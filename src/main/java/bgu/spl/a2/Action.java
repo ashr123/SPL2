@@ -45,12 +45,10 @@ public abstract class Action<R>
 		actorThreadPool=pool;
 		actorID=actorId;
 		this.actorState=actorState;
-		if(nextAction==null)
+		if (nextAction==null)
 			start();
 		else
-		{
 			nextAction.call();
-		}
 	}
 
 	/**
@@ -65,6 +63,7 @@ public abstract class Action<R>
 	 */
 	protected final void then(Collection<? extends Action<?>> actions, callback callback)
 	{
+		nextAction=callback;
 		final AtomicInteger actionsPerformed=new AtomicInteger();
 		for (Action<?> action : actions)
 			action.getResult().subscribe(() -> {
@@ -74,7 +73,7 @@ public abstract class Action<R>
 					currPerformed=actionsPerformed.get();
 				} while (!actionsPerformed.compareAndSet(currPerformed, currPerformed+1));
 				if (actionsPerformed.get()==actions.size())
-					callback.call();//Adds this action back to his actor
+					actorThreadPool.submit(this, actorID, actorState);
 			});
 	}
 
@@ -108,8 +107,8 @@ public abstract class Action<R>
 	 */
 	public Promise<?> sendMessage(Action<?> action, String actorId, PrivateState actorState)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		actorThreadPool.submit(action, actorId, actorState);
+		return action.getResult();
 	}
 
 	/**
