@@ -45,6 +45,7 @@ public abstract class Action<R>
 		actorThreadPool=pool;
 		actorID=actorId;
 		this.actorState=actorState;
+		actorState.addRecord(getActionName());
 		if (nextAction==null)
 			start();
 		else
