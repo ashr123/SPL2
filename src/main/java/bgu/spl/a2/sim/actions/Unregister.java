@@ -37,15 +37,14 @@ public class Unregister extends Action<Boolean>
 				@Override
 				protected void start()
 				{
-					boolean isSucceeded=false;
 					if (actorState instanceof StudentPrivateState)
-						complete(isSucceeded=((StudentPrivateState)actorState).getGrades().remove(course)!=null);
+						complete(((StudentPrivateState)actorState).getGrades().remove(course)!=null);
 					else
 						complete(false);
 					synchronized (System.out)
 					{
 						System.out.println(
-								"Student: "+studentID+" removed it's grade of course "+course+": "+isSucceeded);
+								"Student: "+studentID+"has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+course+" from it's grades sheet");
 					}
 				}
 			};

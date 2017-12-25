@@ -11,7 +11,7 @@ import java.util.List;
 public class CoursePrivateState extends PrivateState
 {
 	private Integer availableSpots;
-	private Integer registered;
+	private Integer registered=0;
 	private List<String> regStudents=new LinkedList<>();
 	private List<String> prequisites=new LinkedList<>();
 	private boolean endOfRegistration;

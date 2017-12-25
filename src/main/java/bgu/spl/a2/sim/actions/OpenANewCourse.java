@@ -18,7 +18,7 @@ public class OpenANewCourse extends Action<Boolean>
 	private int space;
 	private Collection<String> prerequisites;
 
-	public OpenANewCourse(String course,int space,Collection<String> prerequisites)
+	public OpenANewCourse(String course, int space, Collection<String> prerequisites)
 	{
 		setActionName("Open Course");
 		this.course=course;
@@ -34,7 +34,7 @@ public class OpenANewCourse extends Action<Boolean>
 		CoursePrivateState CPS=new CoursePrivateState();
 		CPS.setAvailableSpots(space);
 		CPS.getPrequisites().addAll(prerequisites);
-			sendMessage(new Action<String>()
+		sendMessage(new Action<String>()
 		{
 			@Override
 			protected void start()
@@ -46,6 +46,6 @@ public class OpenANewCourse extends Action<Boolean>
 				}
 			}
 		}, course, CPS);
-			complete(true);
+		complete(true);
 	}
 }
