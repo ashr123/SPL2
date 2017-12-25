@@ -22,20 +22,23 @@ public class AddStudent extends Action<Boolean>
 	@Override
 	protected void start()
 	{
-		if (actorState instanceof DepartmentPrivateState)
-			((DepartmentPrivateState)actorState).getStudentList().add(studentID);
-		sendMessage(new Action<String>()
+		if (actorState instanceof DepartmentPrivateState &&
+		    !((DepartmentPrivateState)actorState).getStudentList().contains(studentID))
 		{
-			@Override
-			protected void start()
+			((DepartmentPrivateState)actorState).getStudentList().add(studentID);
+			sendMessage(new Action<String>()
 			{
-				complete("Student added!");
-				synchronized (System.out)
+				@Override
+				protected void start()
 				{
-					System.out.println("Student "+studentID+" added!!!");
+					complete("Student added!");
+					synchronized (System.out)
+					{
+						System.out.println("Student "+studentID+" added!!!");
+					}
 				}
-			}
-		}, studentID, new StudentPrivateState());
-		complete(true);
+			}, studentID, new StudentPrivateState());
+			complete(true);
+		}
 	}
 }

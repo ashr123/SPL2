@@ -1,6 +1,11 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
+import bgu.spl.a2.sim.privateStates.CoursePrivateState;
+import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Behavior: This action should close a course. Should unregister all the registered students in the
@@ -12,16 +17,36 @@ import bgu.spl.a2.Action;
  */
 public class CloseACourse extends Action<Boolean>
 {
-	public CloseACourse()//TODO Change constructor's signature
+	private String course;
+
+	public CloseACourse(String course)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		setActionName("Close Course");
+		this.course=course;
 	}
 
 	@Override
 	protected void start()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		Collection<Unregister> actions=new LinkedList<>();
+		if (actorState instanceof DepartmentPrivateState &&
+		    actorThreadPool.getPrivateState(course) instanceof CoursePrivateState &&
+		    ((DepartmentPrivateState)actorState).getCourseList().contains(course))
+		{
+			for (String student : ((CoursePrivateState)actorThreadPool.getPrivateState(course)).getRegStudents())
+				{
+					Unregister action=new Unregister(student, course);
+					actions.add(action);
+					sendMessage(action, course, new CoursePrivateState());
+				}
+			then(actions, () -> {
+				((DepartmentPrivateState)actorState).getCourseList().remove(course);
+				synchronized (System.out)
+				{
+					System.out.println("Course: "+course+" has been closed!!!");
+				}
+				complete(false);
+			});
+		}
 	}
 }

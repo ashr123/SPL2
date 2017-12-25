@@ -1,6 +1,8 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
+import bgu.spl.a2.sim.privateStates.CoursePrivateState;
+import bgu.spl.a2.sim.privateStates.StudentPrivateState;
 
 /**
  * Behavior: If the student is enrolled in the course, this action should unregister him (update the
@@ -11,16 +13,31 @@ import bgu.spl.a2.Action;
  */
 public class Unregister extends Action<Boolean>
 {
-	public Unregister()//TODO Change constructor's signature
+	private String studentID, course;
+
+	public Unregister(String studentID, String course)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		setActionName("Unregister");
+		this.studentID=studentID;
+		this.course=course;
 	}
 
 	@Override
 	protected void start()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (actorState instanceof CoursePrivateState &&
+		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState &&
+		    (((CoursePrivateState)actorState).getRegStudents().contains(studentID)))
+		{
+			if (((StudentPrivateState)actorThreadPool.getPrivateState(studentID)).getGrades().remove(course)!=null)
+			{
+				((CoursePrivateState)actorState).setRegistered(((CoursePrivateState)actorState).getRegistered()-1);
+				((CoursePrivateState)actorState).getRegStudents().remove(studentID);
+			}
+			synchronized (System.out)
+			{
+				System.out.println("Student: "+studentID+" has been removed from course "+course+"!!!");
+			}
+		}
 	}
 }

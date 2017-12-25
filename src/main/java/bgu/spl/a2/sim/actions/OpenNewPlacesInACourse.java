@@ -1,6 +1,7 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
+import bgu.spl.a2.sim.privateStates.CoursePrivateState;
 
 /**
  * Behavior: This action should increase the number of available spaces for the course
@@ -9,16 +10,24 @@ import bgu.spl.a2.Action;
  */
 public class OpenNewPlacesInACourse extends Action<Boolean>
 {
-	public OpenNewPlacesInACourse()//TODO Change constructor's signature
+	private int number;
+
+	public OpenNewPlacesInACourse(int number)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		setActionName("Add Spaces");
+		this.number=number;
 	}
 
 	@Override
 	protected void start()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (actorState instanceof CoursePrivateState)
+			((CoursePrivateState)actorState)
+					.setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
+		synchronized (System.out)
+		{
+			System.out.println(number+" spaces has been added to course "+ actorID);
+		}
+		complete(true);
 	}
 }
