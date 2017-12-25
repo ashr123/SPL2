@@ -1,5 +1,7 @@
 package bgu.spl.a2;
 
+import javafx.util.Pair;
+
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 

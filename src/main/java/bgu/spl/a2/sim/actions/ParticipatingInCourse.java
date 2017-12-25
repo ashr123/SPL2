@@ -10,10 +10,8 @@ import bgu.spl.a2.Action;
  */
 public class ParticipatingInCourse extends Action<Boolean>
 {
-	public ParticipatingInCourse()//TODO Change constructor's signature
+	public ParticipatingInCourse()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
 	@Override
