@@ -26,16 +26,16 @@ public class AnnounceAboutTheEndOfRegistrationPeriod extends Action<Boolean>
 		Collection<CloseACourse> actions=new LinkedList<>();
 		if (actorState instanceof DepartmentPrivateState)
 		{
-			for(String course : ((DepartmentPrivateState)actorState).getCourseList())
-			if(((CoursePrivateState)actorThreadPool.getPrivateState(course)).getRegistered()<5)
-			{
-				CloseACourse action=new CloseACourse(course);
-				actions.add(action);
-				sendMessage(action,course,new CoursePrivateState());
-			}
-			else
-				((CoursePrivateState)actorThreadPool.getPrivateState(course)).setEndOfRegistration(true);
-			then(actions,()->{
+			for (String course : ((DepartmentPrivateState)actorState).getCourseList())
+				if (((CoursePrivateState)actorThreadPool.getPrivateState(course)).getRegistered()<5)
+				{
+					CloseACourse action=new CloseACourse(course);
+					actions.add(action);
+					sendMessage(action, course, new CoursePrivateState());
+				}
+				else
+					((CoursePrivateState)actorThreadPool.getPrivateState(course)).setEndOfRegistration(true);
+			then(actions, () -> {
 				synchronized (System.out)
 				{
 					System.out.println("All Courses Gets Announce About End Of Registration");
