@@ -16,9 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class Action<R>
 {
-	private ActorThreadPool actorThreadPool;
-	private String actorID;
-	private PrivateState actorState;
+	protected ActorThreadPool actorThreadPool;
+	protected String actorID;
+	protected PrivateState actorState;
 	private String actionName;
 	private Promise<R> promise=new Promise<>();
 	private callback nextAction;//Create's in start()

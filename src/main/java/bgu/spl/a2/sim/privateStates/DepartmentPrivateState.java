@@ -2,6 +2,7 @@ package bgu.spl.a2.sim.privateStates;
 
 import bgu.spl.a2.PrivateState;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -9,8 +10,8 @@ import java.util.List;
  */
 public class DepartmentPrivateState extends PrivateState
 {
-	private List<String> courseList;
-	private List<String> studentList;
+	private List<String> courseList=new LinkedList<>();
+	private List<String> studentList=new LinkedList<>();
 
 	/**
 	 * Implementors note: you may not add other constructors to this class nor
@@ -19,8 +20,6 @@ public class DepartmentPrivateState extends PrivateState
 	 */
 	public DepartmentPrivateState()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
 	public List<String> getCourseList()

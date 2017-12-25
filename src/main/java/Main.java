@@ -1,15 +1,23 @@
 import bgu.spl.a2.Action;
 import bgu.spl.a2.ActorThreadPool;
 import bgu.spl.a2.PrivateState;
+import bgu.spl.a2.sim.actions.AddStudent;
+import bgu.spl.a2.sim.privateStates.CoursePrivateState;
+import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
+import bgu.spl.a2.sim.privateStates.StudentPrivateState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main
 {
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args)
 	{
+		StudentPrivateState studentPrivateState=new StudentPrivateState();
+		CoursePrivateState coursePrivateState=new CoursePrivateState();
 		ActorThreadPool pool=new ActorThreadPool(1000);
+		AddStudent addStudent=new AddStudent("Roy");
+		pool.submit(addStudent, "Software Engineering", new DepartmentPrivateState());
 		Action action1=new Action<Integer>()
 		{
 			@Override

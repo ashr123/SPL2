@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class StudentPrivateState extends PrivateState
 {
-	private HashMap<String, Integer> grades;
+	private HashMap<String, Integer> grades=new HashMap<>();
 	private long signature;
 
 	/**
@@ -19,8 +19,6 @@ public class StudentPrivateState extends PrivateState
 	 */
 	public StudentPrivateState()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
 	public HashMap<String, Integer> getGrades()
@@ -31,5 +29,10 @@ public class StudentPrivateState extends PrivateState
 	public long getSignature()
 	{
 		return signature;
+	}
+
+	public void setSignature(long signature)
+	{
+		this.signature=signature;
 	}
 }
