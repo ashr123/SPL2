@@ -15,7 +15,7 @@ public class Main
 	{
 		StudentPrivateState studentPrivateState=new StudentPrivateState();
 		CoursePrivateState coursePrivateState=new CoursePrivateState();
-		ActorThreadPool pool=new ActorThreadPool(1000);
+		ActorThreadPool pool=new ActorThreadPool(10);
 		AddStudent addStudent=new AddStudent("Roy");
 		pool.submit(addStudent, "Software Engineering", new DepartmentPrivateState());
 		Action action1=new Action<Integer>()
