@@ -26,19 +26,21 @@ public class AddStudent extends Action<Boolean>
 		    !((DepartmentPrivateState)actorState).getStudentList().contains(studentID))
 		{
 			((DepartmentPrivateState)actorState).getStudentList().add(studentID);
-			sendMessage(new Action<String>()
+			sendMessage(new Action<Boolean>()
 			{
 				@Override
 				protected void start()
 				{
-					complete("Student added!");
+					complete(true);
 					synchronized (System.out)
 					{
-						System.out.println("Student "+studentID+" added!!!");
+						System.out.println("Student "+studentID+" has SUCCESSFULLY been added!!!");
 					}
 				}
 			}, studentID, new StudentPrivateState());
 			complete(true);
 		}
+		else
+			complete(false);
 	}
 }

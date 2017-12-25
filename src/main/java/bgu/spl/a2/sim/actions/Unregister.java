@@ -4,6 +4,9 @@ import bgu.spl.a2.Action;
 import bgu.spl.a2.sim.privateStates.CoursePrivateState;
 import bgu.spl.a2.sim.privateStates.StudentPrivateState;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * Behavior: If the student is enrolled in the course, this action should unregister him (update the
  * list of students of course, remove the course from the grades sheet of the student and increases the
@@ -29,15 +32,40 @@ public class Unregister extends Action<Boolean>
 		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState &&
 		    (((CoursePrivateState)actorState).getRegStudents().contains(studentID)))
 		{
-			if (((StudentPrivateState)actorThreadPool.getPrivateState(studentID)).getGrades().remove(course)!=null)
+			Action<?> action=new Action<Boolean>()
 			{
-				((CoursePrivateState)actorState).setRegistered(((CoursePrivateState)actorState).getRegistered()-1);
-				((CoursePrivateState)actorState).getRegStudents().remove(studentID);
-			}
-			synchronized (System.out)
-			{
-				System.out.println("Student: "+studentID+" has been removed from course "+course+"!!!");
-			}
+				@Override
+				protected void start()
+				{
+					boolean isSucceeded=false;
+					if (actorState instanceof StudentPrivateState)
+						complete(isSucceeded=((StudentPrivateState)actorState).getGrades().remove(course)!=null);
+					else
+						complete(false);
+					synchronized (System.out)
+					{
+						System.out.println(
+								"Student: "+studentID+" removed it's grade of course "+course+": "+isSucceeded);
+					}
+				}
+			};
+			Collection<Action<?>> actions=new LinkedList<>();
+			actions.add(action);
+			sendMessage(action, studentID, new StudentPrivateState());
+			then(actions, () -> {
+				if (getResult().isResolved() && getResult().get())
+				{
+					((CoursePrivateState)actorState).setRegistered(((CoursePrivateState)actorState)
+							                                               .getRegistered()-1);
+					complete(((CoursePrivateState)actorState).getRegStudents().remove(studentID));
+				}
+				else
+					complete(false);
+				synchronized (System.out)
+				{
+					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+course+"!!!");
+				}
+			});
 		}
 	}
 }
