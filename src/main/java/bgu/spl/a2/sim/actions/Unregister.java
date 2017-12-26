@@ -16,13 +16,12 @@ import java.util.LinkedList;
  */
 public class Unregister extends Action<Boolean>
 {
-	private String studentID, course;
+	private String studentID;
 
-	public Unregister(String studentID, String course)
+	public Unregister(String studentID)
 	{
 		setActionName("Unregister");
 		this.studentID=studentID;
-		this.course=course;
 	}
 
 	@Override
@@ -38,13 +37,13 @@ public class Unregister extends Action<Boolean>
 				protected void start()
 				{
 					if (actorState instanceof StudentPrivateState)
-						complete(((StudentPrivateState)actorState).getGrades().remove(course)!=null);
+						complete(((StudentPrivateState)actorState).getGrades().remove(Unregister.this.actorID)!=null);
 					else
 						complete(false);
 					synchronized (System.out)
 					{
 						System.out.println(
-								"Student: "+studentID+"has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+course+" from it's grades sheet");
+								"Student: "+studentID+"has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
 					}
 				}
 			};
@@ -62,7 +61,7 @@ public class Unregister extends Action<Boolean>
 					complete(false);
 				synchronized (System.out)
 				{
-					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+course+"!!!");
+					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
 				}
 			});
 		}

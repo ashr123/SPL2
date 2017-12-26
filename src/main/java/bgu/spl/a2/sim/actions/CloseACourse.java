@@ -42,7 +42,7 @@ public class CloseACourse extends Action<Boolean>
 						((CoursePrivateState)actorState).setAvailableSpots(-1);
 						for (String student : ((CoursePrivateState)actorState).getRegStudents())
 						{
-							Unregister unregister=new Unregister(student, course);
+							Unregister unregister=new Unregister(student);
 							actions.add(unregister);
 							sendMessage(unregister, course, new CoursePrivateState());
 						}
