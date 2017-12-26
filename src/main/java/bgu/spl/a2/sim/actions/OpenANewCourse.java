@@ -30,22 +30,26 @@ public class OpenANewCourse extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof DepartmentPrivateState)
-			((DepartmentPrivateState)actorState).getCourseList().add(course);
-		CoursePrivateState CPS=new CoursePrivateState();
-		CPS.setAvailableSpots(space);
-		CPS.getPrequisites().addAll(prerequisites);
-		sendMessage(new Action<String>()
 		{
-			@Override
-			protected void start()
+			((DepartmentPrivateState)actorState).getCourseList().add(course);
+			CoursePrivateState CPS=new CoursePrivateState();
+			CPS.setAvailableSpots(space);
+			CPS.getPrequisites().addAll(prerequisites);
+			sendMessage(new Action<String>()
 			{
-				complete("Course added!");
-				synchronized (System.out)
+				@Override
+				protected void start()
 				{
-					System.out.println("Course "+course+" added!!!");
+					complete("Course added!");
+					synchronized (System.out)
+					{
+						System.out.println("Course "+course+" added!!!");
+					}
 				}
-			}
-		}, course, CPS);
-		complete(true);
+			}, course, CPS);
+			complete(true);
+		}
+		else
+			complete(false);
 	}
 }

@@ -22,8 +22,7 @@ public class OpenNewPlacesInACourse extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof CoursePrivateState)
-			((CoursePrivateState)actorState)
-					.setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
+			((CoursePrivateState)actorState).setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
 		synchronized (System.out)
 		{
 			System.out.println(number+" spaces has been added to course "+ actorID);
