@@ -41,6 +41,12 @@ public class AddStudent extends Action<Boolean>
 			complete(true);
 		}
 		else
+		{
 			complete(false);
+			synchronized (System.out)
+			{
+				System.out.println("Student "+studentID+" has NOT been added!!!");
+			}
+		}
 	}
 }

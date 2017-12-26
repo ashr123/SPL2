@@ -22,11 +22,22 @@ public class OpenNewPlacesInACourse extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof CoursePrivateState)
-			((CoursePrivateState)actorState).setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
-		synchronized (System.out)
 		{
-			System.out.println(number+" spaces has been added to course "+ actorID);
+			((CoursePrivateState)actorState)
+					.setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
+			synchronized (System.out)
+			{
+				System.out.println(number+" spaces has SUCCESSFULLY been added to course "+actorID);
+			}
+			complete(true);
 		}
-		complete(true);
+		else
+		{
+			complete(false);
+			synchronized (System.out)
+			{
+				System.out.println(number+" spaces has NOT been added to course "+actorID);
+			}
+		}
 	}
 }

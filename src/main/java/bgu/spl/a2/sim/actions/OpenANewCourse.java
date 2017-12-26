@@ -43,13 +43,19 @@ public class OpenANewCourse extends Action<Boolean>
 					complete("Course added!");
 					synchronized (System.out)
 					{
-						System.out.println("Course "+course+" added!!!");
+						System.out.println("Course "+course+" has SUCCESSFULLY been added!!!");
 					}
 				}
 			}, course, CPS);
 			complete(true);
 		}
 		else
+		{
 			complete(false);
+			synchronized (System.out)
+			{
+				System.out.println("Course "+course+" has NOT been added!!!");
+			}
+		}
 	}
 }
