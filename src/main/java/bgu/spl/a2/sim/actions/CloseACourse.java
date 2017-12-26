@@ -1,7 +1,6 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
-import bgu.spl.a2.Promise;
 import bgu.spl.a2.sim.privateStates.CoursePrivateState;
 import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
 
@@ -30,46 +29,50 @@ public class CloseACourse extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof DepartmentPrivateState &&
-		    actorThreadPool.getPrivateState(course) instanceof CoursePrivateState &&
 		    ((DepartmentPrivateState)actorState).getCourseList().contains(course))
 		{
-			Collection<Action<?>> actions=new LinkedList<>();
-			Action<Boolean> action, finalAction;
-			for (String student : ((CoursePrivateState)actorThreadPool.getPrivateState(course)).getRegStudents())
+			Action<Boolean> action=new Action<Boolean>()
+			{
+				@Override
+				protected void start()
 				{
-					action=new Unregister(student, course);
-					actions.add(action);
-					sendMessage(action, course, new CoursePrivateState());
-				}
-				finalAction=new Action<Boolean>()
-				{
-					@Override
-					protected void start()
+					if (actorState instanceof CoursePrivateState)
 					{
-						if (actorState instanceof CoursePrivateState)
+						Collection<Action<?>> actions=new LinkedList<>();
+						((CoursePrivateState)actorState).setAvailableSpots(-1);
+						for (String student : ((CoursePrivateState)actorState).getRegStudents())
 						{
-							((CoursePrivateState)actorState).setAvailableSpots(-1);
-							complete(true);
+							Unregister unregister=new Unregister(student, course);
+							actions.add(unregister);
+							sendMessage(unregister, course, new CoursePrivateState());
 						}
-						else
-							complete(false);
+						then(actions, () -> {
+							complete(true);
+							System.out.println("Available spots of course: "+course+" has SUCCESSFULLY been changed to -1");
+						});
+					}
+					else
+					{
+						complete(false);
 						synchronized (System.out)
 						{
-							System.out.println("Available spots of course: "+course+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been changed to -1");
+							System.out.println("Available spots of course: "+course+" has NOT been changed to -1");
 						}
 					}
-				};
-				actions.add(finalAction);
-				sendMessage(finalAction, course, new CoursePrivateState());
-			then(actions, () -> {
-				((DepartmentPrivateState)actorState).getCourseList().remove(course);
-				synchronized (System.out)
-				{
-					System.out.println("Course: "+course+" has "+(finalAction.getResult().get() ?
-					                                              "SUCCESSFULLY" : "NOT")+" been closed!!!");
 				}
-				complete(true);
+			};
+			Collection<Action<?>> actions=new LinkedList<>();
+			sendMessage(action, course, new CoursePrivateState());
+			actions.add(action);
+			then(actions, () -> {
+				complete(action.getResult().get());
+				System.out.println("Course: "+course+" has "+(action.getResult().get() ? "SUCCESSFULLY" : "NOT")+" been closed!!!");
 			});
+		}
+		else
+		{
+			complete(false);
+			System.out.println("Course: "+course+" has NOT been closed!!!");
 		}
 	}
 }

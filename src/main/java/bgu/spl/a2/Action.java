@@ -1,6 +1,5 @@
 package bgu.spl.a2;
 
-
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,7 +85,7 @@ public abstract class Action<R>
 	 */
 	protected final void complete(R result)
 	{
-		if (!promise.isResolved())
+//		if (!promise.isResolved())
 			promise.resolve(result);
 	}
 
