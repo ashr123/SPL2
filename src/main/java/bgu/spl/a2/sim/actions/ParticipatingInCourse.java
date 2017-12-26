@@ -18,7 +18,7 @@ public class ParticipatingInCourse extends Action<Boolean>
 	private String student;
 	private int grade;
 
-	public ParticipatingInCourse(String student,int grade)
+	public ParticipatingInCourse(String student, int grade)
 	{
 		setActionName("Participate In Course");
 		this.student=student;
@@ -28,21 +28,21 @@ public class ParticipatingInCourse extends Action<Boolean>
 	@Override
 	protected void start()
 	{
-		if(actorState instanceof CoursePrivateState &&
-		   actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
+		if (actorState instanceof CoursePrivateState &&
+		    actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
 		{
-			if(((CoursePrivateState)actorState).getAvailableSpots()!=-1)
+			if (((CoursePrivateState)actorState).getAvailableSpots()!=-1)
 			{
 				Boolean canRegister=true;
-				for(String course : ((CoursePrivateState)actorState).getPrequisites())
+				for (String course : ((CoursePrivateState)actorState).getPrequisites())
 				{
-					if(((StudentPrivateState)actorThreadPool.getPrivateState(student))
-							   .getGrades().get(course)!=null &&
-					   ((StudentPrivateState)actorThreadPool.getPrivateState(student))
-							   .getGrades().get(course)<56)
+					if (((StudentPrivateState)actorThreadPool.getPrivateState(student))
+							    .getGrades().get(course)!=null &&
+					    ((StudentPrivateState)actorThreadPool.getPrivateState(student))
+							    .getGrades().get(course)<56)
 						canRegister=false;
 				}
-				if(canRegister)
+				if (canRegister)
 				{
 					Collection<Action<?>> actions=new LinkedList<>();
 					int spaces=((CoursePrivateState)actorState).getAvailableSpots();
@@ -52,13 +52,15 @@ public class ParticipatingInCourse extends Action<Boolean>
 						@Override
 						protected void start()
 						{
-							if(actorState instanceof StudentPrivateState)
+							if (actorState instanceof StudentPrivateState)
 							{
-								if(((StudentPrivateState)actorState).getGrades().containsKey(ParticipatingInCourse.this.actorID))
+								if (((StudentPrivateState)actorState).getGrades()
+								                                     .containsKey(ParticipatingInCourse.this.actorID))
 									complete(false);
 								else
 								{
-									((StudentPrivateState)actorState).getGrades().put(ParticipatingInCourse.this.actorID,grade);
+									((StudentPrivateState)actorState).getGrades()
+									                                 .put(ParticipatingInCourse.this.actorID, grade);
 									complete(true);
 								}
 							}
@@ -66,14 +68,15 @@ public class ParticipatingInCourse extends Action<Boolean>
 								complete(false);
 							synchronized (System.out)
 							{
-								System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+actorID);
+								System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+(getResult()
+										                                                                         .get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+actorID);
 							}
 						}
 					};
 					sendMessage(action, student, new StudentPrivateState());
 					actions.add(action);
 					then(actions, () -> {
-						if(!action.getResult().get())
+						if (!action.getResult().get())
 						{
 							((CoursePrivateState)actorState).setAvailableSpots(spaces+1);
 							complete(false);
