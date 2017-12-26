@@ -1,7 +1,6 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
-import bgu.spl.a2.PrivateState;
 import bgu.spl.a2.sim.privateStates.CoursePrivateState;
 import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
 
@@ -34,33 +33,43 @@ public class AnnounceAboutTheEndOfRegistrationPeriod extends Action<Boolean>
 					@Override
 					protected void start()
 					{
-						if (((CoursePrivateState)actorState).getRegistered()<5)
+						if (actorState instanceof CoursePrivateState)
 						{
 							((CoursePrivateState)actorState).setAvailableSpots(-1);
-							Collection<CloseACourse> a=new LinkedList<>();
-							CloseACourse closeACourse=new CloseACourse(course);
-							a.add(closeACourse);
-							sendMessage(closeACourse, course, new CoursePrivateState());
-							then(a, () -> complete(true));
+							if (((CoursePrivateState)actorState).getRegistered()<5)
+							{
+								Collection<CloseACourse> a=new LinkedList<>();
+								CloseACourse closeACourse=new CloseACourse(course);
+								a.add(closeACourse);
+								sendMessage(closeACourse, course, new CoursePrivateState());
+								then(a, () -> complete(true));
+							}
+							else
+								complete(true);
 						}
 						else
-						{
-							((CoursePrivateState)actorState).setAvailableSpots(-1);
-							complete(true);
-						}
+							complete(false);
 					}
 				};
 				sendMessage(action, course, new CoursePrivateState());
 				actions.add(action);
 			}
-				then(actions,()->
+			then(actions, () ->
+			{
+				synchronized (System.out)
 				{
-					synchronized (System.out)
-					{
-						System.out.println("End Of Registration");
-					}
-					complete(true);
-				});
+					System.out.println("End Of Registration");
+				}
+				complete(true);
+			});
+		}
+		else
+		{
+			complete(false);
+			synchronized (System.out)
+			{
+				System.out.println("NOT End Of Registration");
+			}
 		}
 	}
 }

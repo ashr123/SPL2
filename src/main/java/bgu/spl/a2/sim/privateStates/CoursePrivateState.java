@@ -14,7 +14,6 @@ public class CoursePrivateState extends PrivateState
 	private Integer registered=0;
 	private List<String> regStudents=new LinkedList<>();
 	private List<String> prequisites=new LinkedList<>();
-	private boolean endOfRegistration;
 
 	/**
 	 * Implementors note: you may not add other constructors to this class nor
@@ -53,15 +52,5 @@ public class CoursePrivateState extends PrivateState
 	public void setRegistered(Integer registered)
 	{
 		this.registered=registered;
-	}
-
-	public boolean isEndOfRegistration()
-	{
-		return endOfRegistration;
-	}
-
-	public void setEndOfRegistration(boolean endOfRegistration)
-	{
-		this.endOfRegistration=endOfRegistration;
 	}
 }
