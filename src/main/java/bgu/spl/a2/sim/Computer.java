@@ -15,7 +15,7 @@ public class Computer
 		this.computerType=computerType;
 	}
 
-	public Computer(String computerType, long failSig, long successSig)
+	public Computer(String computerType, long successSig, long failSig)
 	{
 		this(computerType);
 		this.failSig=failSig;

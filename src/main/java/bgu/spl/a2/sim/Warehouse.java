@@ -10,5 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Warehouse
 {
-	Map<Computer, SuspendingMutex> mutexMap=new ConcurrentHashMap<>();
+	private static final Map<String, SuspendingMutex> mutexMap=new ConcurrentHashMap<>();
+
+	public static void addComputer(String type, long sigSuccess, long sigFail)
+	{
+		mutexMap.put(type, new SuspendingMutex(new Computer(type, sigSuccess, sigFail)));
+	}
+
+	public static SuspendingMutex getSuspendingMutex(String type)
+	{
+		return mutexMap.get(type);
+	}
 }
