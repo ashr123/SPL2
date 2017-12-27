@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SuspendingMutex
 {
 	private final AtomicBoolean isBlocked=new AtomicBoolean();
-	private final Queue<Promise<?>> promisesQueue=new ConcurrentLinkedQueue<>();
+	private final Queue<Promise<Computer>> promisesQueue=new ConcurrentLinkedQueue<>();
 	private Computer computer;
 
 	/**
@@ -37,7 +37,12 @@ public class SuspendingMutex
 	 */
 	public Promise<Computer> down()
 	{
-		while (!isBlocked.compareAndSet(false, true));
+		Promise<Computer> promise=new Promise<>();
+		if (isBlocked.compareAndSet(false, true))
+			promise.resolve(computer);
+		else
+			promisesQueue.add(promise);
+		return promise;
 	}
 
 	/**
@@ -46,7 +51,15 @@ public class SuspendingMutex
 	 */
 	public void up()
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		if (promisesQueue.isEmpty())
+			isBlocked.set(false);
+		else
+			synchronized (this)
+			{
+				if (promisesQueue.isEmpty())
+					isBlocked.set(false);
+				else
+					promisesQueue.poll().resolve(computer);
+			}
 	}
 }
