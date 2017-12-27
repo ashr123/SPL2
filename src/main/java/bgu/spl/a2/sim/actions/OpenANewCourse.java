@@ -35,12 +35,12 @@ public class OpenANewCourse extends Action<Boolean>
 			CoursePrivateState CPS=new CoursePrivateState();
 			CPS.setAvailableSpots(space);
 			CPS.getPrequisites().addAll(prerequisites);
-			sendMessage(new Action<String>()
+			sendMessage(new Action<Boolean>()
 			{
 				@Override
 				protected void start()
 				{
-					complete("Course added!");
+					complete(true);
 					synchronized (System.out)
 					{
 						System.out.println("Course "+course+" has SUCCESSFULLY been added!!!");

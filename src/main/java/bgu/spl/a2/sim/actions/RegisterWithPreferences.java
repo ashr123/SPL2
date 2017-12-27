@@ -1,9 +1,7 @@
 package bgu.spl.a2.sim.actions;
 
 import bgu.spl.a2.Action;
-import bgu.spl.a2.Promise;
 import bgu.spl.a2.sim.privateStates.CoursePrivateState;
-import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -34,10 +32,7 @@ public class RegisterWithPreferences extends Action<Boolean>
 			actions.add(register);
 			then(actions, () -> {
 				if (!register.getResult().get())
-				{
-					complete(false);
 					start();
-				}
 				else
 				{
 					complete(true);

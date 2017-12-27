@@ -2,6 +2,10 @@ package bgu.spl.a2.sim;
 
 import bgu.spl.a2.Promise;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * this class is related to {@link Computer}
  * it indicates if a computer is free or not
@@ -11,7 +15,8 @@ import bgu.spl.a2.Promise;
  */
 public class SuspendingMutex
 {
-
+	AtomicBoolean isBlocked=new AtomicBoolean();
+	Queue<Promise<?>> promisesQueue=new ConcurrentLinkedQueue<>();
 
 	/**
 	 * Constructor

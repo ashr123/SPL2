@@ -5,13 +5,21 @@ import java.util.Map;
 
 public class Computer
 {
-	String computerType;
-	long failSig;
-	long successSig;
+	private String computerType;
+	private long failSig;
+	private long successSig;
+	private final SuspendingMutex suspendingMutex=new SuspendingMutex(this);
 
 	public Computer(String computerType)
 	{
 		this.computerType=computerType;
+	}
+
+	public Computer(String computerType, long failSig, long successSig)
+	{
+		this(computerType);
+		this.failSig=failSig;
+		this.successSig=successSig;
 	}
 
 	/**
@@ -19,11 +27,33 @@ public class Computer
 	 *
 	 * @param courses       courses that should be pass
 	 * @param coursesGrades courses' grade
-	 * @return a signature if couersesGrades grades meet the conditions
+	 * @return a signature if coursesGrades grades meet the conditions
 	 */
 	public long checkAndSign(List<String> courses, Map<String, Integer> coursesGrades)
 	{
-		//TODO: replace method body with real implementation
-		throw new UnsupportedOperationException("Not Implemented Yet.");
+		for (String course : courses)
+			if (coursesGrades.get(course)==null || coursesGrades.get(course)<56)
+				return failSig;
+		return successSig;
+	}
+
+	public String getComputerType()
+	{
+		return computerType;
+	}
+
+	public long getFailSig()
+	{
+		return failSig;
+	}
+
+	public long getSuccessSig()
+	{
+		return successSig;
+	}
+
+	public SuspendingMutex getSuspendingMutex()
+	{
+		return suspendingMutex;
 	}
 }
