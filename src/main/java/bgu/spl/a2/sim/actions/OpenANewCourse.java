@@ -14,9 +14,9 @@ import java.util.Collection;
  */
 public class OpenANewCourse extends Action<Boolean>
 {
-	private String course;
-	private int space;
-	private Collection<String> prerequisites;
+	private final String course;
+	private final int space;
+	private final Collection<String> prerequisites;
 
 	public OpenANewCourse(String course, int space, Collection<String> prerequisites)
 	{

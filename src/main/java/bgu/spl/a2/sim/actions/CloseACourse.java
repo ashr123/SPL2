@@ -17,7 +17,7 @@ import java.util.LinkedList;
  */
 public class CloseACourse extends Action<Boolean>
 {
-	private String course;
+	private final String course;
 
 	public CloseACourse(String course)
 	{
@@ -48,7 +48,10 @@ public class CloseACourse extends Action<Boolean>
 						}
 						then(actions, () -> {
 							complete(true);
-							System.out.println("Available spots of course: "+course+" has SUCCESSFULLY been changed to -1");
+							synchronized (System.out)
+							{
+								System.out.println("Available spots of course: "+course+" has SUCCESSFULLY been changed to -1");
+							}
 						});
 					}
 					else

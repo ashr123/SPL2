@@ -11,7 +11,7 @@ import bgu.spl.a2.sim.privateStates.StudentPrivateState;
  */
 public class AddStudent extends Action<Boolean>
 {
-	private String studentID;
+	private final String studentID;
 
 	public AddStudent(String studentID)
 	{
