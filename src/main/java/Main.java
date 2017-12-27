@@ -8,6 +8,7 @@ import bgu.spl.a2.sim.actions.OpenNewPlacesInACourse;
 import bgu.spl.a2.sim.privateStates.CoursePrivateState;
 import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
 import bgu.spl.a2.sim.privateStates.StudentPrivateState;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Main
 {
 	public static void main(String[] args)
 	{
+		Gson gson=new Gson();
 		StudentPrivateState studentPrivateState=new StudentPrivateState();
 		CoursePrivateState coursePrivateState=new CoursePrivateState();
 		ActorThreadPool pool=new ActorThreadPool(10);
