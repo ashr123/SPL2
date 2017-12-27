@@ -48,8 +48,8 @@ public class Simulator
 		throw new UnsupportedOperationException("Not Implemented Yet.");
 	}
 
-	public static int main(String[] args)
+	public static void main(String[] args)
 	{
-		return 0;
+
 	}
 }

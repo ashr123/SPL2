@@ -22,7 +22,7 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 	String computer;
 	List<String> conditions;
 
-	public CheckAdministrativeObligations(List<String > students,String computer,List<String> conditions)
+	public CheckAdministrativeObligations(List<String> students, String computer, List<String> conditions)
 	{
 		setActionName("Administrative Check");
 		this.students=students;
@@ -47,7 +47,9 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 						{
 							if (actorState instanceof StudentPrivateState)
 							{
-								((StudentPrivateState)actorState).setSignature(promise.get().checkAndSign(conditions, ((StudentPrivateState)actorState).getGrades()));
+								((StudentPrivateState)actorState).setSignature(promise.get().checkAndSign(conditions,
+								                                                                          ((StudentPrivateState)actorState)
+										                                                                          .getGrades()));
 								complete(true);
 							}
 							else
