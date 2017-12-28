@@ -183,13 +183,12 @@ public class Simulator
 							privateState=new DepartmentPrivateState();
 							break;
 						case "Open Course":
-							action1=new OpenANewCourse(gsonAction.Course, Integer.getInteger(gsonAction.Space),
-							                           gsonAction.Prerequisites);
+							action1=new OpenANewCourse(gsonAction.Course, Integer.parseInt(gsonAction.Space), gsonAction.Prerequisites);
 							actorID=gsonAction.Department;
 							privateState=new DepartmentPrivateState();
 							break;
 						case "Add Spaces":
-							action1=new OpenNewPlacesInACourse(Integer.getInteger(gsonAction.Number));
+							action1=new OpenNewPlacesInACourse(Integer.parseInt(gsonAction.Number));
 							actorID=gsonAction.Course;
 							privateState=new CoursePrivateState();
 							break;
@@ -204,7 +203,7 @@ public class Simulator
 						case "Register With Preferences":
 							LinkedList<Integer> temp=new LinkedList<>();
 							for (String grade : gsonAction.Grade)
-								temp.add(Integer.getInteger(grade));
+								temp.add(Integer.parseInt(grade));
 							action1=new RegisterWithPreferences(gsonAction.Student,
 							                                    new LinkedList<>(gsonAction.Preferences), temp);
 							actorID=gsonAction.Course;
