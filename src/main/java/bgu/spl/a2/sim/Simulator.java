@@ -195,8 +195,7 @@ public class Simulator
 						case "Participate In Course":
 							action1=new ParticipatingInCourse(gsonAction.Student,
 							                                  gsonAction.Grade.get(0)
-							                                                  .equals("-") ? -1 : Integer.getInteger(
-									                                  gsonAction.Grade.get(0)));
+							                                                  .equals("-") ? -1 : Integer.parseInt(gsonAction.Grade.get(0)));
 							actorID=gsonAction.Course;
 							privateState=new CoursePrivateState();
 							break;
