@@ -67,15 +67,18 @@ public class Simulator
 
 	public static void main(String[] args)
 	{
-		try
-		{
-			deSerializationJSON(args[0]);
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		start();
+//		for (int i=0; i<100; i++)
+//		{
+			try
+			{
+				deSerializationJSON(args[0]);
+			}
+			catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			start();
+//		}
 	}
 
 	private class GsonAction
@@ -137,14 +140,6 @@ public class Simulator
 				phaseList=tempObject.phase3;
 				break;
 			default:
-				try
-				{
-					actorThreadPool.shutdown();
-				}
-				catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
 				return;
 		}
 		Action<Boolean> action=new Action<Boolean>()
@@ -215,7 +210,10 @@ public class Simulator
 							break;
 						default:
 							complete(false);
-							System.out.println("Couldn't recognize "+gsonAction.Action);
+							synchronized (System.out)
+							{
+								System.out.println("Couldn't recognize "+gsonAction.Action);
+							}
 							return;
 					}
 					sendMessage(action1, actorID, privateState);
@@ -223,7 +221,22 @@ public class Simulator
 				}
 				then(actions, () -> {
 					complete(true);
-					System.out.println("Finished phase "+phase+"!!!");
+					synchronized (System.out)
+					{
+						System.out.println("Finished phase "+phase+"!!!");
+					}
+					if (phase==3)
+					{
+						try
+						{
+							actorThreadPool.shutdown();
+						}
+						catch (InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+						return;
+					}
 					makePhase(phase+1);
 				});
 			}

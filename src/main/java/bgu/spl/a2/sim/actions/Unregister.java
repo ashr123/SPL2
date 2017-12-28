@@ -31,7 +31,7 @@ public class Unregister extends Action<Boolean>
 		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState &&
 		    (((CoursePrivateState)actorState).getRegStudents().contains(studentID)))
 		{
-			Action<?> action=new Action<Boolean>()
+			Action<Boolean> action=new Action<Boolean>()
 			{
 				@Override
 				protected void start()
@@ -43,7 +43,7 @@ public class Unregister extends Action<Boolean>
 					synchronized (System.out)
 					{
 						System.out.println(
-								"Student: "+studentID+"has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
+								"Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
 					}
 				}
 			};
@@ -51,7 +51,7 @@ public class Unregister extends Action<Boolean>
 			actions.add(action);
 			sendMessage(action, studentID, new StudentPrivateState());
 			then(actions, () -> {
-				if (getResult().isResolved() && getResult().get())
+				if (action.getResult().isResolved() && action.getResult().get())
 				{
 					((CoursePrivateState)actorState).setRegistered(((CoursePrivateState)actorState)
 							                                               .getRegistered()-1);
@@ -64,6 +64,15 @@ public class Unregister extends Action<Boolean>
 					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
 				}
 			});
+		}
+		else
+		{
+			complete(false);
+			synchronized (System.out)
+			{
+				System.out.println("Student: "+studentID+" has "+(getResult()
+						                                                  .get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
+			}
 		}
 	}
 }

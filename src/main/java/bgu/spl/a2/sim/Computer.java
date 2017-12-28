@@ -19,13 +19,6 @@ public class Computer
 		this.computerType=computerType;
 	}
 
-	public Computer(String computerType, long successSig, long failSig)
-	{
-		this(computerType);
-		this.failSig=failSig;
-		this.successSig=successSig;
-	}
-
 	/**
 	 * this method checks if the courses' grades fulfill the conditions
 	 *
@@ -44,15 +37,5 @@ public class Computer
 	public String getComputerType()
 	{
 		return computerType;
-	}
-
-	public long getFailSig()
-	{
-		return failSig;
-	}
-
-	public long getSuccessSig()
-	{
-		return successSig;
 	}
 }

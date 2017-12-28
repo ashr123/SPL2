@@ -31,7 +31,7 @@ public class ParticipatingInCourse extends Action<Boolean>
 		if (actorState instanceof CoursePrivateState &&
 		    actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
 		{
-			if (/*((CoursePrivateState)actorState).getAvailableSpots()!= null && */((CoursePrivateState)actorState).getAvailableSpots()!=-1)
+			if (((CoursePrivateState)actorState).getAvailableSpots()!= null && ((CoursePrivateState)actorState).getAvailableSpots()!=-1)
 			{
 				Boolean canRegister=true;
 				for (String course : ((CoursePrivateState)actorState).getPrequisites())
@@ -82,7 +82,10 @@ public class ParticipatingInCourse extends Action<Boolean>
 							complete(false);
 						}
 						else
+						{
+							((CoursePrivateState)actorState).getRegStudents().add(student);
 							complete(true);
+						}
 					});
 				}
 				else
@@ -90,7 +93,7 @@ public class ParticipatingInCourse extends Action<Boolean>
 					complete(false);
 					synchronized (System.out)
 					{
-						System.out.println("student "+student+" does not have prequisites for course "+actorID);
+						System.out.println("student "+student+" does not have prerequisites for course "+actorID);
 					}
 				}
 			}

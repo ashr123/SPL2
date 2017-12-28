@@ -108,7 +108,7 @@ public class ActorThreadPool
 			}
 			catch (InterruptedException ignored)
 			{
-			}//TODO think about
+			}
 			if (!getActors().containsKey(actorId))
 			{
 				getActors().put(actorId, actorState);
