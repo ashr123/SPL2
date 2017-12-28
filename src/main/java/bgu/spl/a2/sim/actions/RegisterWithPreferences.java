@@ -26,7 +26,7 @@ public class RegisterWithPreferences extends Action<Boolean>
 		if (actorState instanceof CoursePrivateState && !grades.isEmpty())
 		{
 			String preference=preferences.removeFirst();
-			Action<Boolean> register=new ParticipatingInCourse(preference, grades.removeFirst());
+			Action<Boolean> register=new ParticipatingInCourse(student, grades.removeFirst());
 			sendMessage(register, preference, new CoursePrivateState());
 			Collection<Action<Boolean>> actions=new LinkedList<>();
 			actions.add(register);

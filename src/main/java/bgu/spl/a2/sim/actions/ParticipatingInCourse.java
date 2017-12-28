@@ -31,7 +31,7 @@ public class ParticipatingInCourse extends Action<Boolean>
 		if (actorState instanceof CoursePrivateState &&
 		    actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
 		{
-			if (((CoursePrivateState)actorState).getAvailableSpots()!=-1)
+			if (/*((CoursePrivateState)actorState).getAvailableSpots()!= null && */((CoursePrivateState)actorState).getAvailableSpots()!=-1)
 			{
 				Boolean canRegister=true;
 				for (String course : ((CoursePrivateState)actorState).getPrequisites())
