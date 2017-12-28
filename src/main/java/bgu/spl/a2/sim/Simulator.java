@@ -206,7 +206,7 @@ public class Simulator
 								temp.add(Integer.parseInt(grade));
 							action1=new RegisterWithPreferences(gsonAction.Student,
 							                                    new LinkedList<>(gsonAction.Preferences), temp);
-							actorID=gsonAction.Course;
+							actorID=gsonAction.Preferences.get(0);
 							privateState=new CoursePrivateState();
 							break;
 						case "Unregister":
@@ -216,7 +216,7 @@ public class Simulator
 							break;
 						default:
 							complete(false);
-							System.out.println("couldn't recognize "+gsonAction.Action);
+							System.out.println("Couldn't recognize "+gsonAction.Action);
 							return;
 					}
 					sendMessage(action1, actorID, privateState);
