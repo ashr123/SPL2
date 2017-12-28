@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class CheckAdministrativeObligations extends Action<Boolean>
 {
-	List<String> students;
-	String computer;
-	List<String> conditions;
+	private final List<String> students;
+	private final String computer;
+	private final List<String> conditions;
 
 	public CheckAdministrativeObligations(List<String> students, String computer, List<String> conditions)
 	{

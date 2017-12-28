@@ -1,14 +1,18 @@
 package bgu.spl.a2.sim;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 import java.util.Map;
 
 public class Computer
 {
-	private String computerType;
+	@SerializedName("Type")
+	private final String computerType;
+	@SerializedName("Sig Fail")
 	private long failSig;
+	@SerializedName("Sig Success")
 	private long successSig;
-	private final SuspendingMutex suspendingMutex=new SuspendingMutex(this);
 
 	public Computer(String computerType)
 	{
@@ -50,10 +54,5 @@ public class Computer
 	public long getSuccessSig()
 	{
 		return successSig;
-	}
-
-	public SuspendingMutex getSuspendingMutex()
-	{
-		return suspendingMutex;
 	}
 }

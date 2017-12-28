@@ -12,9 +12,9 @@ public class Warehouse
 {
 	private static final Map<String, SuspendingMutex> mutexMap=new ConcurrentHashMap<>();
 
-	public static void addComputer(String type, long sigSuccess, long sigFail)
+	public static void addComputer(Computer computer)
 	{
-		mutexMap.put(type, new SuspendingMutex(new Computer(type, sigSuccess, sigFail)));
+		mutexMap.put(computer.getComputerType(), new SuspendingMutex(computer));
 	}
 
 	public static SuspendingMutex getSuspendingMutex(String type)

@@ -3,6 +3,7 @@ package bgu.spl.a2.sim.actions;
 import bgu.spl.a2.Action;
 import bgu.spl.a2.sim.privateStates.DepartmentPrivateState;
 import bgu.spl.a2.sim.privateStates.StudentPrivateState;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Behavior: This action adds a new student to a specified department.
@@ -11,6 +12,7 @@ import bgu.spl.a2.sim.privateStates.StudentPrivateState;
  */
 public class AddStudent extends Action<Boolean>
 {
+	@SerializedName("Add Student")
 	private final String studentID;
 
 	public AddStudent(String studentID)
