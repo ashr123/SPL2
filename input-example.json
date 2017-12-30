@@ -1,5 +1,5 @@
 {
-  "threads": 1,
+  "threads": 8,
   "Computers": [
     {
       "Type": "A",
@@ -42,23 +42,6 @@
       "Action": "Add Student",
       "Department": "CS",
       "Student": "123456789"
-    },
-    {
-      "Action": "Register With Preferences",
-      "Student": "5959595959",
-      "Preferences": [
-        "Data Structures",
-        "SPL"
-      ],
-      "Grade": [
-        "98",
-        "56"
-      ]
-    },
-    {
-      "Action": "Add Student",
-      "Department": "CS",
-      "Student": "5959595959"
     }
   ],
   "Phase 2": [

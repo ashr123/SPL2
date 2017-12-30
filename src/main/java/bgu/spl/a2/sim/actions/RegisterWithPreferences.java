@@ -10,9 +10,9 @@ public class RegisterWithPreferences extends Action<Boolean>
 {
 	private final String student;
 	private final LinkedList<String> preferences;
-	private final LinkedList<Integer> grades;
+	private final LinkedList<String> grades;
 
-	public RegisterWithPreferences(String student, LinkedList<String> preferences, LinkedList<Integer> grades)
+	public RegisterWithPreferences(String student, LinkedList<String> preferences, LinkedList<String> grades)
 	{
 		setActionName("Register With Preferences");
 		this.student=student;
@@ -26,7 +26,7 @@ public class RegisterWithPreferences extends Action<Boolean>
 		if (actorState instanceof CoursePrivateState && !grades.isEmpty())
 		{
 			String preference=preferences.removeFirst();
-			Action<Boolean> register=new ParticipatingInCourse(student, grades.removeFirst());
+			Action<Boolean> register=new ParticipatingInCourse(student, Integer.parseInt(grades.removeFirst()));
 			sendMessage(register, preference, new CoursePrivateState());
 			Collection<Action<Boolean>> actions=new LinkedList<>();
 			actions.add(register);

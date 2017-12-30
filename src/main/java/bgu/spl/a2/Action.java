@@ -1,5 +1,6 @@
 package bgu.spl.a2;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @param <R> the action result type
  */
-public abstract class Action<R>
+public abstract class Action<R> implements Serializable
 {
 	protected ActorThreadPool actorThreadPool;
 	protected String actorID;
