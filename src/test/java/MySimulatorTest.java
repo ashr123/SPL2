@@ -34,7 +34,8 @@ public class MySimulatorTest {
     }
 
     @Test
-    public void main() throws IOException {
+    public void main() throws IOException, InterruptedException
+    {
         Simulator.main(new String[]{"SimulatorTest.json"});
         try (InputStream fin = new FileInputStream("result.ser");
              ObjectInputStream ois = new ObjectInputStream(fin)) {

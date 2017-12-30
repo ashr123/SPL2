@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,10 +32,8 @@ public class Simulator
 {
 	public static ActorThreadPool actorThreadPool;
 	private static TempObject tempObject;
-	private static CountDownLatch
-			countDownLatch1,
-			countDownLatch2,
-			countDownLatch3;
+	private static CountDownLatch countDownLatch1, countDownLatch2, countDownLatch3;
+	private static final ArrayList<Action<?>> actions=new ArrayList<>();
 
 	/**
 	 * Begin the simulation Should not be called before attachActorThreadPool()
@@ -68,25 +67,33 @@ public class Simulator
 		{
 			e.printStackTrace();
 		}
-		HashMap<String, PrivateState> map=new HashMap<>(actorThreadPool.getActors());
-//		map.remove("Simulator");
-		return map;
+		return new HashMap<>(actorThreadPool.getActors());
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
-//		for (int i=0; i<100; i++)
-//		{
-			try
-			{
-				deSerializationJSON(args[0]);
-			}
-			catch (InterruptedException | IOException e)
-			{
-				e.printStackTrace();
-			}
-//			start();
-//		}
+		tempObject=new Gson().fromJson(new JsonReader(new FileReader(args[0])), TempObject.class);
+		attachActorThreadPool(new ActorThreadPool(tempObject.numOfThreads));
+		start();
+		countDownLatch1=new CountDownLatch(tempObject.phase1.size());
+		countDownLatch2=new CountDownLatch(tempObject.phase2.size());
+		countDownLatch3=new CountDownLatch(tempObject.phase3.size());
+		for (Computer computer : tempObject.computersList)
+			Warehouse.addComputer(computer);
+		makePhase(1);
+
+		countDownLatch1.await();
+		actions.clear();
+		makePhase(2);
+		countDownLatch2.await();
+		actions.clear();
+		makePhase(3);
+		countDownLatch3.await();
+		synchronized (System.out)
+		{
+			System.out.println("Finished phase 3!!!");
+		}
+		new ObjectOutputStream(new FileOutputStream("result.ser")).writeObject(end());
 	}
 
 	private class GsonAction
@@ -122,29 +129,6 @@ public class Simulator
 //			Conditions=conditions;
 //			Preferences=preferences;
 //		}
-	}
-
-	private static void deSerializationJSON(String args) throws IOException, InterruptedException
-	{
-		tempObject=new Gson().fromJson(new JsonReader(new FileReader(args)), TempObject.class);
-		attachActorThreadPool(new ActorThreadPool(tempObject.numOfThreads));
-		start();
-		countDownLatch1=new CountDownLatch(tempObject.phase1.size());
-		countDownLatch2=new CountDownLatch(tempObject.phase2.size());
-		countDownLatch3=new CountDownLatch(tempObject.phase3.size());
-		for (Computer computer : tempObject.computersList)
-			Warehouse.addComputer(computer);
-		makePhase(1);
-		countDownLatch1.await();
-		makePhase(2);
-		countDownLatch2.await();
-		makePhase(3);
-		countDownLatch3.await();
-		synchronized (System.out)
-		{
-			System.out.println("Finished phase 3!!!");
-		}
-		new ObjectOutputStream(new FileOutputStream("result.ser")).writeObject(end());
 	}
 
 	private static void makePhase(int phase)
@@ -241,6 +225,7 @@ public class Simulator
 					return;
 			}
 			action.getResult().subscribe(countDownLatch::countDown);
+			actions.add(action);
 			actorThreadPool.submit(action, actorID, privateState);
 		}
 	}
@@ -258,7 +243,8 @@ public class Simulator
 		@SerializedName("Phase 3")
 		private List<GsonAction> phase3;
 
-//		TempObject(int numOfThreads, List<Computer> computersList, List<GsonAction> phase1, List<GsonAction> phase2, List<GsonAction> phase3)
+//		TempObject(int numOfThreads, List<Computer> computersList, List<GsonAction> phase1,
+//		           List<GsonAction> phase2, List<GsonAction> phase3)
 //		{
 //			this.numOfThreads=numOfThreads;
 //			this.computersList=computersList;
