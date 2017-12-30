@@ -34,7 +34,7 @@ public class OpenANewCourse extends Action<Boolean>
 			((DepartmentPrivateState)actorState).getCourseList().add(course);
 			CoursePrivateState CPS=new CoursePrivateState();
 			CPS.setAvailableSpots(space);
-			CPS.getPrequisites().addAll(prerequisites);
+			CPS.getPrerequisites().addAll(prerequisites);
 			sendMessage(new Action<Boolean>()
 			{
 				@Override

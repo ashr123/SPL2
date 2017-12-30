@@ -34,12 +34,10 @@ public class ParticipatingInCourse extends Action<Boolean>
 			if (((CoursePrivateState)actorState).getAvailableSpots()!= null && ((CoursePrivateState)actorState).getAvailableSpots()!=-1)
 			{
 				Boolean canRegister=true;
-				for (String course : ((CoursePrivateState)actorState).getPrequisites())
+				for (String course : ((CoursePrivateState)actorState).getPrerequisites())
 				{
 					if (((StudentPrivateState)actorThreadPool.getPrivateState(student))
-							    .getGrades().get(course)!=null &&
-					    ((StudentPrivateState)actorThreadPool.getPrivateState(student))
-							    .getGrades().get(course)<56)
+							    .getGrades().get(course)==null)
 						canRegister=false;
 				}
 				if (canRegister)
@@ -59,6 +57,12 @@ public class ParticipatingInCourse extends Action<Boolean>
 									complete(false);
 								else
 								{
+									for (String prerequisite : ((CoursePrivateState)ParticipatingInCourse.this.actorState).getPrerequisites())
+										if (!((StudentPrivateState)actorState).getGrades().containsKey(prerequisite))
+										{
+											complete(false);
+											return;
+										}
 									((StudentPrivateState)actorState).getGrades()
 									                                 .put(ParticipatingInCourse.this.actorID, grade);
 									complete(true);

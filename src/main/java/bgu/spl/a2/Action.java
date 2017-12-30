@@ -76,6 +76,8 @@ public abstract class Action<R> implements Serializable
 				if (actionsPerformed.get()==actions.size())
 					actorThreadPool.submit(this, actorID, actorState);
 			});
+		if (actions.isEmpty())
+			actorThreadPool.submit(this, actorID, actorState);
 	}
 
 	/**

@@ -13,7 +13,7 @@ public class CoursePrivateState extends PrivateState
 	private Integer availableSpots;
 	private Integer registered=0;
 	private List<String> regStudents=new LinkedList<>();
-	private List<String> prequisites=new LinkedList<>();
+	private List<String> prerequisites=new LinkedList<>();
 
 	/**
 	 * Implementors note: you may not add other constructors to this class nor
@@ -39,9 +39,9 @@ public class CoursePrivateState extends PrivateState
 		return regStudents;
 	}
 
-	public List<String> getPrequisites()
+	public List<String> getPrerequisites()
 	{
-		return prequisites;
+		return prerequisites;
 	}
 
 	public void setAvailableSpots(Integer availableSpots)
