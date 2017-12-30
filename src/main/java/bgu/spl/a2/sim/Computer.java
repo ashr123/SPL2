@@ -19,6 +19,13 @@ public class Computer
 		this.computerType=computerType;
 	}
 
+	public Computer(String computerType, long successSig, long failSig)
+	{
+		this.computerType=computerType;
+		this.successSig=successSig;
+		this.failSig=failSig;
+	}
+
 	/**
 	 * this method checks if the courses' grades fulfill the conditions
 	 *
