@@ -62,7 +62,7 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 			});
 			then(actions, () -> {
 				Warehouse.getSuspendingMutex(computer).up();
-			//	if (!getResult().isResolved())
+//				if (!getResult().isResolved())
 					complete(true);
 				synchronized (System.out)
 				{
