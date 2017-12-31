@@ -15,8 +15,8 @@ import java.util.LinkedList;
  */
 public class ParticipatingInCourse extends Action<Boolean>
 {
-	private String student;
-	private int grade;
+	private final String student;
+	private final int grade;
 
 	public ParticipatingInCourse(String student, int grade)
 	{
@@ -28,110 +28,110 @@ public class ParticipatingInCourse extends Action<Boolean>
 	@Override
 	protected void start()
 	{
-		if (actorState instanceof CoursePrivateState &&
-		    actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
+		if (actorState instanceof CoursePrivateState)
 		{
-			if (((CoursePrivateState)actorState).getAvailableSpots()!= null &&
-			    ((CoursePrivateState)actorState).getAvailableSpots()>0)
+			if (((CoursePrivateState)actorState).getAvailableSpots()!=null &&
+			    ((CoursePrivateState)actorState).getAvailableSpots()>0)//If the course exists and has available spots
 			{
-				Boolean canRegister=true;
-				for (String course : ((CoursePrivateState)actorState).getPrerequisites())
+				Collection<Action<?>> actions=new LinkedList<>();
+				Action<Boolean> action=new Action<Boolean>()
 				{
-					if (((StudentPrivateState)actorThreadPool.getPrivateState(student))
-							    .getGrades().get(course)==null)
-						canRegister=false;
-				}
-				if (canRegister)
-				{
-					Collection<Action<?>> actions=new LinkedList<>();
-					int spaces=((CoursePrivateState)actorState).getAvailableSpots();
-					((CoursePrivateState)actorState).setAvailableSpots(spaces-1);
-					Action<Boolean> action=new Action<Boolean>()
+					@Override
+					protected void start()
 					{
-						@Override
-						protected void start()
+						if (actorState instanceof StudentPrivateState)
 						{
-							if (actorState instanceof StudentPrivateState)
-							{
-								if (((StudentPrivateState)actorState).getGrades()
-								                                     .containsKey(ParticipatingInCourse.this
-										                                                  .actorID))
-									complete(false);
-								else
-								{
-									for (String prerequisite : ((CoursePrivateState)ParticipatingInCourse
-											                                                .this.actorState)
-											                           .getPrerequisites())
-										if (!((StudentPrivateState)actorState).getGrades()
-										                                      .containsKey(prerequisite))
-										{
-											complete(false);
-											return;
-										}
-									((StudentPrivateState)actorState).getGrades()
-									                                 .put(ParticipatingInCourse.this.actorID,
-									                                      grade);
-									complete(true);
-								}
-							}
-							else
+							if (((StudentPrivateState)actorState).getGrades()
+							                                     .containsKey(ParticipatingInCourse.this
+									                                                  .actorID))//If the course already exists in the student's records
 								complete(false);
-							synchronized (System.out)
+							else
 							{
-								System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+
-								                   (getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+
-								                   actorID);
-							}
-						}
-					};
-					sendMessage(action, student, new StudentPrivateState());
-					actions.add(action);
-					then(actions, () -> {
-						if (!action.getResult().get())
-						{
-							((CoursePrivateState)actorState).setAvailableSpots(spaces+1);
-							complete(false);
-						}
-						else
-						{
-							if (((CoursePrivateState)actorState).getAvailableSpots()!=-1)
-							{
-								((CoursePrivateState)actorState).getRegStudents().add(student);
+								for (String prerequisite : ((CoursePrivateState)ParticipatingInCourse
+										                                                .this.actorState)
+										                           .getPrerequisites())
+									if (!((StudentPrivateState)actorState).getGrades()
+									                                      .containsKey(prerequisite))
+									{
+										complete(false);
+//										synchronized (System.out)
+//										{
+//											System.out.println(
+//													"student "+student+" does not have prerequisites for course "+ParticipatingInCourse.this.actorID);
+//										}
+										return;
+									}
+								((StudentPrivateState)actorState).getGrades()
+								                                 .put(ParticipatingInCourse.this.actorID,
+								                                      grade);
 								complete(true);
 							}
-							else
-							{
-								complete(false);
-							}
 						}
-					});
-				}
-				else
-				{
-					complete(false);
-					synchronized (System.out)
-					{
-						System.out.println("student "+student+" does not have prerequisites for course "+actorID);
+						else
+							complete(false);
+//						synchronized (System.out)
+//						{
+//							System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+
+//							                   (getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+
+//							                   actorID);
+//						}
 					}
-				}
+				};
+				sendMessage(action, student, new StudentPrivateState());
+				actions.add(action);
+				then(actions, () -> {
+					if (!action.getResult().get())//Checks if the grade had not been added to the student
+						complete(false);
+					else
+						if (((CoursePrivateState)actorState)
+								    .getAvailableSpots()>0)//Checks if the course had not been closed of fulled
+						{
+							((CoursePrivateState)actorState).getRegStudents().add(student);
+							((CoursePrivateState)actorState).setAvailableSpots(
+									((CoursePrivateState)actorState).getAvailableSpots()-1);
+							((CoursePrivateState)actorState).setRegistered(((CoursePrivateState)actorState)
+									                                               .getRegistered()+1);
+							complete(true);
+						}
+						else
+							complete(false);
+					if (!getResult().get() && action.getResult().get())
+						sendMessage(new Action<Boolean>()
+						{
+							@Override
+							protected void start()
+							{
+								if (actorState instanceof StudentPrivateState)
+								{
+									((StudentPrivateState)actorState).getGrades()
+									                                 .remove(ParticipatingInCourse.this
+											                                         .actorID);
+									complete(true);
+								}
+								else
+									complete(false);
+							}
+						}, student, new StudentPrivateState());
+
+				});
 			}
 			else
 			{
 				complete(false);
-				synchronized (System.out)
-				{
-					System.out.println("student "+student+" does not have place in course "+actorID+" or the course " +
-					                   "is closed");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println("student "+student+" does not have place in course "+actorID+" or the course "+
+//					                   "is closed");
+//				}
 			}
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("student "+student+" has NOT been registered for course "+actorID);
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("student "+student+" has NOT been registered for course "+actorID);
+//			}
 		}
 	}
 }

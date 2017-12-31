@@ -10,7 +10,7 @@ import bgu.spl.a2.sim.privateStates.CoursePrivateState;
  */
 public class OpenNewPlacesInACourse extends Action<Boolean>
 {
-	private int number;
+	private final int number;
 
 	public OpenNewPlacesInACourse(int number)
 	{
@@ -26,19 +26,19 @@ public class OpenNewPlacesInACourse extends Action<Boolean>
 		{
 			((CoursePrivateState)actorState)
 					.setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);
-			synchronized (System.out)
-			{
-				System.out.println(number+" spaces has SUCCESSFULLY been added to course "+actorID);
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println(number+" spaces has SUCCESSFULLY been added to course "+actorID);
+//			}
 			complete(true);
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println(number+" spaces has NOT been added to course "+actorID);
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println(number+" spaces has NOT been added to course "+actorID);
+//			}
 		}
 	}
 }

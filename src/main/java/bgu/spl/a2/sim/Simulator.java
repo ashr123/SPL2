@@ -89,10 +89,6 @@ public class Simulator
 		actions.clear();
 		makePhase(3);
 		countDownLatch3.await();
-		synchronized (System.out)
-		{
-			System.out.println("Finished phase 3!!!");
-		}
 		new ObjectOutputStream(new FileOutputStream("result.ser")).writeObject(end());
 	}
 
@@ -110,25 +106,6 @@ public class Simulator
 		private List<String> Students;
 		private List<String> Conditions;
 		private List<String> Preferences;
-
-//		public GsonAction(String action, String department, String course, String space,
-//		                  String student, String computer, String number, List<String> grade,
-//		                  List<String> prerequisites, List<String> students, List<String> conditions,
-//		                  List<String> preferences)
-//		{
-//			Action=action;
-//			Department=department;
-//			Course=course;
-//			Space=space;
-//			Student=student;
-//			Computer=computer;
-//			Number=number;
-//			Grade=grade;
-//			Prerequisites=prerequisites;
-//			Students=students;
-//			Conditions=conditions;
-//			Preferences=preferences;
-//		}
 	}
 
 	private static void makePhase(int phase)
@@ -151,10 +128,6 @@ public class Simulator
 				break;
 			default:
 				return;
-		}
-		synchronized (System.out)
-		{
-			System.out.println("Starting phase "+phase+"...");
 		}
 		for (GsonAction gsonAction : phaseList)
 		{
@@ -242,15 +215,5 @@ public class Simulator
 		private List<GsonAction> phase2;
 		@SerializedName("Phase 3")
 		private List<GsonAction> phase3;
-
-//		TempObject(int numOfThreads, List<Computer> computersList, List<GsonAction> phase1,
-//		           List<GsonAction> phase2, List<GsonAction> phase3)
-//		{
-//			this.numOfThreads=numOfThreads;
-//			this.computersList=computersList;
-//			this.phase1=phase1;
-//			this.phase2=phase2;
-//			this.phase3=phase3;
-//		}
 	}
 }

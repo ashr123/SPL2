@@ -34,10 +34,10 @@ public class AddStudent extends Action<Boolean>
 				protected void start()
 				{
 					complete(true);
-					synchronized (System.out)
-					{
-						System.out.println("Student "+studentID+" has SUCCESSFULLY been added!!!");
-					}
+//					synchronized (System.out)
+//					{
+//						System.out.println("Student "+studentID+" has SUCCESSFULLY been added!!!");
+//					}
 				}
 			}, studentID, new StudentPrivateState());
 			complete(true);
@@ -45,10 +45,10 @@ public class AddStudent extends Action<Boolean>
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Student "+studentID+" has NOT been added!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Student "+studentID+" has NOT been added!!!");
+//			}
 		}
 	}
 }

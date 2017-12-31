@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class Unregister extends Action<Boolean>
 {
-	private String studentID;
+	private final String studentID;
 
 	public Unregister(String studentID)
 	{
@@ -28,8 +28,7 @@ public class Unregister extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof CoursePrivateState &&
-		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState &&
-		    (((CoursePrivateState)actorState).getRegStudents().contains(studentID)))
+		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState)
 		{
 			Action<Boolean> action=new Action<Boolean>()
 			{
@@ -40,11 +39,11 @@ public class Unregister extends Action<Boolean>
 						complete(((StudentPrivateState)actorState).getGrades().remove(Unregister.this.actorID)!=null);
 					else
 						complete(false);
-					synchronized (System.out)
-					{
-						System.out.println(
-								"Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
-					}
+//					synchronized (System.out)
+//					{
+//						System.out.println(
+//								"Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
+//					}
 				}
 			};
 			Collection<Action<?>> actions=new LinkedList<>();
@@ -59,20 +58,20 @@ public class Unregister extends Action<Boolean>
 				}
 				else
 					complete(false);
-				synchronized (System.out)
-				{
-					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
+//				}
 			});
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Student: "+studentID+" has "+(getResult()
-						                                                  .get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Student: "+studentID+" has "+(getResult()
+//						                                                  .get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
+//			}
 		}
 	}
 }

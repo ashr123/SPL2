@@ -33,7 +33,7 @@ public class MySimulatorTest
 	public static List<Object[]> data()
 	{
 		//Change number of runs by changing the variable currently set to 4000.
-		return Arrays.asList(new Object[1][0]);
+		return Arrays.asList(new Object[4000][0]);
 	}
 
 	@Test
@@ -257,7 +257,7 @@ public class MySimulatorTest
 
 	public void testPlaceForTwo(CoursePrivateState course_state, String course_name)
 	{
-		assertTrue("Two students should be registered to this course", course_state.getRegistered()==2);
+		assertTrue("Two students should be registered to this course "+course_name, course_state.getRegistered()==2);
 		assertTrue("Place should be available", course_state.getAvailableSpots()==0);
 		assertTrue("Only two out of three should be registered",
 		           (course_state.getRegStudents().contains("competition1") &&
@@ -361,11 +361,11 @@ public class MySimulatorTest
 
 	public void testShouldntBeRegistered(StudentPrivateState student_state, String student_name)
 	{
-		assertTrue("Shouldnt be registered after a cycle or register->unregister",
+		assertTrue("Student "+student_name+" shouldn't be registered after a cycle or register->unregister",
 		           student_state.getGrades().size()==0);
-		assertTrue("Shouldnt be registered after a cycle or register->unregister",
+		assertTrue("Student "+student_name+" shouldn't be registered after a cycle or register->unregister",
 		           !student_state.getGrades().containsKey("SPL"));
-		assertTrue("Shouldnt be registered after a cycle or register->unregister",
+		assertTrue("Student "+student_name+" shouldn't be registered after a cycle or register->unregister",
 		           student_state.getGrades().get("SPL")==null);
 	}
 }

@@ -48,19 +48,19 @@ public class CloseACourse extends Action<Boolean>
 						}
 						then(actions, () -> {
 							complete(true);
-							synchronized (System.out)
-							{
-								System.out.println("Available spots of course: "+course+" has SUCCESSFULLY been changed to -1");
-							}
+//							synchronized (System.out)
+//							{
+//								System.out.println("Available spots of course: "+course+" has SUCCESSFULLY been changed to -1");
+//							}
 						});
 					}
 					else
 					{
 						complete(false);
-						synchronized (System.out)
-						{
-							System.out.println("Available spots of course: "+course+" has NOT been changed to -1");
-						}
+//						synchronized (System.out)
+//						{
+//							System.out.println("Available spots of course: "+course+" has NOT been changed to -1");
+//						}
 					}
 				}
 			};
@@ -69,13 +69,13 @@ public class CloseACourse extends Action<Boolean>
 			actions.add(action);
 			then(actions, () -> {
 				complete(action.getResult().get());
-				System.out.println("Course: "+course+" has "+(action.getResult().get() ? "SUCCESSFULLY" : "NOT")+" been closed!!!");
+//				System.out.println("Course: "+course+" has "+(action.getResult().get() ? "SUCCESSFULLY" : "NOT")+" been closed!!!");
 			});
 		}
 		else
 		{
 			complete(false);
-			System.out.println("Course: "+course+" has NOT been closed!!!");
+//			System.out.println("Course: "+course+" has NOT been closed!!!");
 		}
 	}
 }

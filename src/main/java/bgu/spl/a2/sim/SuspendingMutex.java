@@ -17,7 +17,7 @@ public class SuspendingMutex
 {
 	private final AtomicBoolean isBlocked=new AtomicBoolean();
 	private final Queue<Promise<Computer>> promisesQueue=new ConcurrentLinkedQueue<>();
-	private Computer computer;
+	private final Computer computer;
 
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ public class SuspendingMutex
 
 	/**
 	 * Computer acquisition procedure
-	 * Note that this procedure is non-blocking and should return immediatly
+	 * Note that this procedure is non-blocking and should return immediately
 	 *
 	 * @return a promise for the requested computer
 	 */
