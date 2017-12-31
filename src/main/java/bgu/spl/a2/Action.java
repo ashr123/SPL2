@@ -88,8 +88,7 @@ public abstract class Action<R> implements Serializable
 	 */
 	protected final void complete(R result)
 	{
-//		if (!promise.isResolved())
-			promise.resolve(result);
+		promise.resolve(result);
 	}
 
 	/**
@@ -108,7 +107,7 @@ public abstract class Action<R> implements Serializable
 	 * @param actorState actor's private state (actor's information)
 	 * @return promise that will hold the result of the sent action
 	 */
-	public Promise<?> sendMessage(Action<?> action, String actorId, PrivateState actorState)
+	public <T> Promise<T> sendMessage(Action<T> action, String actorId, PrivateState actorState)
 	{
 		actorThreadPool.submit(action, actorId, actorState);
 		return action.getResult();

@@ -21,7 +21,8 @@ public class OpenNewPlacesInACourse extends Action<Boolean>
 	@Override
 	protected void start()
 	{
-		if (actorState instanceof CoursePrivateState)
+		if (actorState instanceof CoursePrivateState &&
+		    ((CoursePrivateState)actorState).getAvailableSpots()!=-1)
 		{
 			((CoursePrivateState)actorState)
 					.setAvailableSpots(((CoursePrivateState)actorState).getAvailableSpots()+number);

@@ -31,7 +31,8 @@ public class ParticipatingInCourse extends Action<Boolean>
 		if (actorState instanceof CoursePrivateState &&
 		    actorThreadPool.getPrivateState(student) instanceof StudentPrivateState)
 		{
-			if (((CoursePrivateState)actorState).getAvailableSpots()!= null && ((CoursePrivateState)actorState).getAvailableSpots()!=-1)
+			if (((CoursePrivateState)actorState).getAvailableSpots()!= null &&
+			    ((CoursePrivateState)actorState).getAvailableSpots()>0)
 			{
 				Boolean canRegister=true;
 				for (String course : ((CoursePrivateState)actorState).getPrerequisites())
@@ -53,18 +54,23 @@ public class ParticipatingInCourse extends Action<Boolean>
 							if (actorState instanceof StudentPrivateState)
 							{
 								if (((StudentPrivateState)actorState).getGrades()
-								                                     .containsKey(ParticipatingInCourse.this.actorID))
+								                                     .containsKey(ParticipatingInCourse.this
+										                                                  .actorID))
 									complete(false);
 								else
 								{
-									for (String prerequisite : ((CoursePrivateState)ParticipatingInCourse.this.actorState).getPrerequisites())
-										if (!((StudentPrivateState)actorState).getGrades().containsKey(prerequisite))
+									for (String prerequisite : ((CoursePrivateState)ParticipatingInCourse
+											                                                .this.actorState)
+											                           .getPrerequisites())
+										if (!((StudentPrivateState)actorState).getGrades()
+										                                      .containsKey(prerequisite))
 										{
 											complete(false);
 											return;
 										}
 									((StudentPrivateState)actorState).getGrades()
-									                                 .put(ParticipatingInCourse.this.actorID, grade);
+									                                 .put(ParticipatingInCourse.this.actorID,
+									                                      grade);
 									complete(true);
 								}
 							}
@@ -72,8 +78,9 @@ public class ParticipatingInCourse extends Action<Boolean>
 								complete(false);
 							synchronized (System.out)
 							{
-								System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+(getResult()
-										                                                                         .get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+actorID);
+								System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+
+								                   (getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+
+								                   actorID);
 							}
 						}
 					};
@@ -87,8 +94,15 @@ public class ParticipatingInCourse extends Action<Boolean>
 						}
 						else
 						{
-							((CoursePrivateState)actorState).getRegStudents().add(student);
-							complete(true);
+							if (((CoursePrivateState)actorState).getAvailableSpots()!=-1)
+							{
+								((CoursePrivateState)actorState).getRegStudents().add(student);
+								complete(true);
+							}
+							else
+							{
+								complete(false);
+							}
 						}
 					});
 				}
@@ -106,7 +120,8 @@ public class ParticipatingInCourse extends Action<Boolean>
 				complete(false);
 				synchronized (System.out)
 				{
-					System.out.println("student "+student+" does not have place in course "+actorID);
+					System.out.println("student "+student+" does not have place in course "+actorID+" or the course " +
+					                   "is closed");
 				}
 			}
 		}

@@ -249,8 +249,7 @@ public class MySimulatorTest
 
 	public void testOpenToClose(CoursePrivateState course_state, String course_name)
 	{
-		assertTrue("Nobody should be registered to a course after closed, registered num",
-		           course_state.getRegistered()==0);
+		assertTrue("Nobody should be registered to a course after closed, registered num, course name: "+course_name, course_state.getRegistered()==0);
 		assertTrue("Nobody should be registered to a course after closed, registered list",
 		           course_state.getRegStudents().size()==0);
 		assertTrue("Number of places in a closed course should be -1", course_state.getAvailableSpots()==-1);
@@ -369,5 +368,4 @@ public class MySimulatorTest
 		assertTrue("Shouldnt be registered after a cycle or register->unregister",
 		           student_state.getGrades().get("SPL")==null);
 	}
-
 }
