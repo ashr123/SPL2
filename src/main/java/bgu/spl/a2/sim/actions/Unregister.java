@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class Unregister extends Action<Boolean>
 {
-	private String studentID;
+	private final String studentID;
 
 	public Unregister(String studentID)
 	{

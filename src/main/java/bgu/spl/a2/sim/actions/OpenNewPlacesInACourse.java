@@ -10,7 +10,7 @@ import bgu.spl.a2.sim.privateStates.CoursePrivateState;
  */
 public class OpenNewPlacesInACourse extends Action<Boolean>
 {
-	private int number;
+	private final int number;
 
 	public OpenNewPlacesInACourse(int number)
 	{
