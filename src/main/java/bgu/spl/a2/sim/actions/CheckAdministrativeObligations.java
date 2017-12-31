@@ -36,8 +36,8 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 		if (actorState instanceof DepartmentPrivateState)
 		{
 			Promise<Computer> promise=Warehouse.getSuspendingMutex(computer).down();
+			Collection<Action<?>> actions=new LinkedList<>();
 			promise.subscribe(() -> {
-				Collection<Action<?>> actions=new LinkedList<>();
 				for (String student : students)
 				{
 					Action<Boolean> action=new Action<Boolean>()
@@ -59,14 +59,16 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 					actions.add(action);
 					sendMessage(action, student, new StudentPrivateState());
 				}
-				then(actions, () -> {
-					Warehouse.getSuspendingMutex(computer).up();
+			});
+			then(actions, () -> {
+				Warehouse.getSuspendingMutex(computer).up();
+				if (!getResult().isResolved())
 					complete(true);
-					synchronized (System.out)
-					{
-						System.out.println("Administrative Obligations for department "+actorID+" has SUCCESSFULLY been checked!!!");
-					}
-				});
+				synchronized (System.out)
+				{
+					System.out.println(
+							"Administrative Obligations for department "+actorID+" has SUCCESSFULLY been checked!!!");
+				}
 			});
 		}
 		else
