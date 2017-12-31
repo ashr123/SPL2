@@ -39,7 +39,10 @@ public class SuspendingMutex
 	{
 		Promise<Computer> promise=new Promise<>();
 		if (isBlocked.compareAndSet(false, true))
+		{
+			if(!isBlocked.get())
 			promise.resolve(computer);
+		}
 		else
 			promisesQueue.add(promise);
 		return promise;

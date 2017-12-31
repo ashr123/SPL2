@@ -33,7 +33,7 @@ public class MySimulatorTest
 	public static List<Object[]> data()
 	{
 		//Change number of runs by changing the variable currently set to 4000.
-		return Arrays.asList(new Object[1000][0]);
+		return Arrays.asList(new Object[4000][0]);
 	}
 
 	@Test

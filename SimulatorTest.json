@@ -1,5 +1,5 @@
 {
-  "threads": 500,
+  "threads": 8,
   "Computers": [
     {
       "Type": "A",
