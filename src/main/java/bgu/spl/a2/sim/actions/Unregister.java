@@ -28,8 +28,7 @@ public class Unregister extends Action<Boolean>
 	protected void start()
 	{
 		if (actorState instanceof CoursePrivateState &&
-		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState &&
-		    (((CoursePrivateState)actorState).getRegStudents().contains(studentID)))
+		    actorThreadPool.getPrivateState(studentID) instanceof StudentPrivateState)
 		{
 			Action<Boolean> action=new Action<Boolean>()
 			{
