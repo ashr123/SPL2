@@ -41,10 +41,10 @@ public class OpenANewCourse extends Action<Boolean>
 				protected void start()
 				{
 					complete(true);
-					synchronized (System.out)
-					{
-						System.out.println("Course "+course+" has SUCCESSFULLY been added!!!");
-					}
+//					synchronized (System.out)
+//					{
+//						System.out.println("Course "+course+" has SUCCESSFULLY been added!!!");
+//					}
 				}
 			}, course, CPS);
 			complete(true);
@@ -52,10 +52,10 @@ public class OpenANewCourse extends Action<Boolean>
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Course "+course+" has NOT been added!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Course "+course+" has NOT been added!!!");
+//			}
 		}
 	}
 }

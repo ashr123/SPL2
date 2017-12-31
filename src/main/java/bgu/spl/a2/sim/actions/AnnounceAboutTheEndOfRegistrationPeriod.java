@@ -56,20 +56,20 @@ public class AnnounceAboutTheEndOfRegistrationPeriod extends Action<Boolean>
 			}
 			then(actions, () ->
 			{
-				synchronized (System.out)
-				{
-					System.out.println("End Of Registration");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println("End Of Registration");
+//				}
 				complete(true);
 			});
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("NOT End Of Registration");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("NOT End Of Registration");
+//			}
 		}
 	}
 }

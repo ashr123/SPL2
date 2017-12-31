@@ -36,20 +36,20 @@ public class RegisterWithPreferences extends Action<Boolean>
 				else
 				{
 					complete(true);
-					synchronized (System.out)
-					{
-						System.out.println("Student "+student+" has SUCCESSFULLY been registered to course "+preference);
-					}
+//					synchronized (System.out)
+//					{
+//						System.out.println("Student "+student+" has SUCCESSFULLY been registered to course "+preference);
+//					}
 				}
 			});
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Student "+student+" has NOT been registered to any course!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Student "+student+" has NOT been registered to any course!!!");
+//			}
 		}
 	}
 }

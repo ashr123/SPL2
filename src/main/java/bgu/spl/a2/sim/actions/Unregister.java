@@ -39,11 +39,11 @@ public class Unregister extends Action<Boolean>
 						complete(((StudentPrivateState)actorState).getGrades().remove(Unregister.this.actorID)!=null);
 					else
 						complete(false);
-					synchronized (System.out)
-					{
-						System.out.println(
-								"Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
-					}
+//					synchronized (System.out)
+//					{
+//						System.out.println(
+//								"Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed "+Unregister.this.actorID+" from it's grades sheet");
+//					}
 				}
 			};
 			Collection<Action<?>> actions=new LinkedList<>();
@@ -58,20 +58,20 @@ public class Unregister extends Action<Boolean>
 				}
 				else
 					complete(false);
-				synchronized (System.out)
-				{
-					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println("Student: "+studentID+" has "+(getResult().get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
+//				}
 			});
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Student: "+studentID+" has "+(getResult()
-						                                                  .get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Student: "+studentID+" has "+(getResult()
+//						                                                  .get() ? "SUCCESSFULLY" : "NOT")+" been removed from course "+actorID+"!!!");
+//			}
 		}
 	}
 }

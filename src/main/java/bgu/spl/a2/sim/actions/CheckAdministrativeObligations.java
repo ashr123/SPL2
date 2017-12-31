@@ -62,22 +62,22 @@ public class CheckAdministrativeObligations extends Action<Boolean>
 			});
 			then(actions, () -> {
 				Warehouse.getSuspendingMutex(computer).up();
-//				if (!getResult().isResolved())
+				if (!getResult().isResolved())
 					complete(true);
-				synchronized (System.out)
-				{
-					System.out.println(
-							"Administrative Obligations for department "+actorID+" has SUCCESSFULLY been checked!!!");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println(
+//							"Administrative Obligations for department "+actorID+" has SUCCESSFULLY been checked!!!");
+//				}
 			});
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("Administrative Obligations for department "+actorID+" has NOT been checked!!!");
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("Administrative Obligations for department "+actorID+" has NOT been checked!!!");
+//			}
 		}
 	}
 }

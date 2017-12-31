@@ -54,11 +54,11 @@ public class ParticipatingInCourse extends Action<Boolean>
 									                                      .containsKey(prerequisite))
 									{
 										complete(false);
-										synchronized (System.out)
-										{
-											System.out.println(
-													"student "+student+" does not have prerequisites for course "+ParticipatingInCourse.this.actorID);
-										}
+//										synchronized (System.out)
+//										{
+//											System.out.println(
+//													"student "+student+" does not have prerequisites for course "+ParticipatingInCourse.this.actorID);
+//										}
 										return;
 									}
 								((StudentPrivateState)actorState).getGrades()
@@ -69,12 +69,12 @@ public class ParticipatingInCourse extends Action<Boolean>
 						}
 						else
 							complete(false);
-						synchronized (System.out)
-						{
-							System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+
-							                   (getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+
-							                   actorID);
-						}
+//						synchronized (System.out)
+//						{
+//							System.out.println("Course "+ParticipatingInCourse.this.actorID+" has "+
+//							                   (getResult().get() ? "SUCCESSFULLY" : "NOT")+" been added to student "+
+//							                   actorID);
+//						}
 					}
 				};
 				sendMessage(action, student, new StudentPrivateState());
@@ -118,20 +118,20 @@ public class ParticipatingInCourse extends Action<Boolean>
 			else
 			{
 				complete(false);
-				synchronized (System.out)
-				{
-					System.out.println("student "+student+" does not have place in course "+actorID+" or the course "+
-					                   "is closed");
-				}
+//				synchronized (System.out)
+//				{
+//					System.out.println("student "+student+" does not have place in course "+actorID+" or the course "+
+//					                   "is closed");
+//				}
 			}
 		}
 		else
 		{
 			complete(false);
-			synchronized (System.out)
-			{
-				System.out.println("student "+student+" has NOT been registered for course "+actorID);
-			}
+//			synchronized (System.out)
+//			{
+//				System.out.println("student "+student+" has NOT been registered for course "+actorID);
+//			}
 		}
 	}
 }

@@ -132,13 +132,11 @@ public class ActorThreadPool
 	 */
 	public void shutdown() throws InterruptedException
 	{
-		System.out.println("Thread pool is stopping...");
 		isStopped.set(true);
 		versionMonitor.inc();
 		for (Thread thread : threads)
 			if (thread!=Thread.currentThread())
 				thread.join();
-		System.out.println("Thread pool has been shutdown!!!");
 	}
 
 	/**
