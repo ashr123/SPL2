@@ -19,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +32,6 @@ public class Simulator
 	public static ActorThreadPool actorThreadPool;
 	private static TempObject tempObject;
 	private static CountDownLatch countDownLatch1, countDownLatch2, countDownLatch3;
-	private static final ArrayList<Action<?>> actions=new ArrayList<>();
 
 	/**
 	 * Begin the simulation Should not be called before attachActorThreadPool()
@@ -81,31 +79,12 @@ public class Simulator
 		for (Computer computer : tempObject.computersList)
 			Warehouse.addComputer(computer);
 		makePhase(1);
-
 		countDownLatch1.await();
-		actions.clear();
 		makePhase(2);
 		countDownLatch2.await();
-		actions.clear();
 		makePhase(3);
 		countDownLatch3.await();
 		new ObjectOutputStream(new FileOutputStream("result.ser")).writeObject(end());
-	}
-
-	private class GsonAction
-	{
-		private String Action;
-		private String Department;
-		private String Course;
-		private String Space;
-		private String Student;
-		private String Computer;
-		private String Number;
-		private List<String> Grade;
-		private List<String> Prerequisites;
-		private List<String> Students;
-		private List<String> Conditions;
-		private List<String> Preferences;
 	}
 
 	private static void makePhase(int phase)
@@ -198,7 +177,6 @@ public class Simulator
 					return;
 			}
 			action.getResult().subscribe(countDownLatch::countDown);
-			actions.add(action);
 			actorThreadPool.submit(action, actorID, privateState);
 		}
 	}
@@ -215,5 +193,21 @@ public class Simulator
 		private List<GsonAction> phase2;
 		@SerializedName("Phase 3")
 		private List<GsonAction> phase3;
+	}
+
+	private class GsonAction
+	{
+		private String Action;
+		private String Department;
+		private String Course;
+		private String Space;
+		private String Student;
+		private String Computer;
+		private String Number;
+		private List<String> Grade;
+		private List<String> Prerequisites;
+		private List<String> Students;
+		private List<String> Conditions;
+		private List<String> Preferences;
 	}
 }
