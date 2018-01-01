@@ -55,16 +55,9 @@ public class Simulator
 	 * shut down the simulation
 	 * returns list of private states
 	 */
-	public static HashMap<String, PrivateState> end()
+	public static HashMap<String, PrivateState> end() throws InterruptedException
 	{
-		try
-		{
-			actorThreadPool.shutdown();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
+		actorThreadPool.shutdown();
 		return new HashMap<>(actorThreadPool.getActors());
 	}
 
