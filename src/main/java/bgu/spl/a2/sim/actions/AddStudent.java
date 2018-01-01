@@ -12,7 +12,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public class AddStudent extends Action<Boolean>
 {
-	@SerializedName("Add Student")
 	private final String studentID;
 
 	public AddStudent(String studentID)
