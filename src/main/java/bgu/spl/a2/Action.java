@@ -21,7 +21,7 @@ public abstract class Action<R> implements Serializable
 	protected String actorID;
 	protected PrivateState actorState;
 	private String actionName="Anonymous action";
-	private Promise<R> promise=new Promise<>();
+	private final Promise<R> promise=new Promise<>();
 	private callback nextAction;//Create's in start()
 
 	/**

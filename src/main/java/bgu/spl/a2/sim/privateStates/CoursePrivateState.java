@@ -12,8 +12,8 @@ public class CoursePrivateState extends PrivateState
 {
 	private Integer availableSpots;
 	private Integer registered=0;
-	private List<String> regStudents=new LinkedList<>();
-	private List<String> prerequisites=new LinkedList<>();
+	private final List<String> regStudents=new LinkedList<>();
+	private final List<String> prerequisites=new LinkedList<>();
 
 	/**
 	 * Implementors note: you may not add other constructors to this class nor

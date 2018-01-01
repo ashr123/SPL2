@@ -21,7 +21,7 @@ public class Computer
 
 	public Computer(String computerType, long successSig, long failSig)
 	{
-		this.computerType=computerType;
+		this(computerType);
 		this.successSig=successSig;
 		this.failSig=failSig;
 	}

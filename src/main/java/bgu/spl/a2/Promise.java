@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Promise<T>
 {
-	private List<callback> callbackList=new LinkedList<>();
-	private AtomicBoolean isResolved=new AtomicBoolean();
+	private final List<callback> callbackList=new LinkedList<>();
+	private final AtomicBoolean isResolved=new AtomicBoolean();
 	private T result;
 
 	/**

@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class StudentPrivateState extends PrivateState
 {
-	private HashMap<String, Integer> grades=new HashMap<>();
+	private final HashMap<String, Integer> grades=new HashMap<>();
 	private long signature;
 
 	/**

@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class PrivateState implements Serializable
 {
 	// holds the actions' name what were executed
-	private List<String> history=new LinkedList<>();
+	private final List<String> history=new LinkedList<>();
 
 	public List<String> getLogger()
 	{

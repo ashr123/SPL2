@@ -10,8 +10,8 @@ import java.util.List;
  */
 public class DepartmentPrivateState extends PrivateState
 {
-	private List<String> courseList=new LinkedList<>();
-	private List<String> studentList=new LinkedList<>();
+	private final List<String> courseList=new LinkedList<>();
+	private final List<String> studentList=new LinkedList<>();
 
 	/**
 	 * Implementors note: you may not add other constructors to this class nor

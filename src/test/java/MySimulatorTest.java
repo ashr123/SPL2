@@ -26,8 +26,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class MySimulatorTest
 {
-	//    @Rule
-	//    public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
+//    @Rule
+//    public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
 	@Parameterized.Parameters
 	public static List<Object[]> data()
@@ -45,12 +45,12 @@ public class MySimulatorTest
 		{
 			HashMap<String, PrivateState> data=(HashMap<String, PrivateState>)ois.readObject();
 			data.forEach((String actor, PrivateState state) -> {
-				//                System.out.println(actor + ": ");
-				//                System.out.print("History: ");
-				//                state.getLogger().forEach((String s) -> {
-				//                    System.out.print(s + ", ");
-				//                });
-				//                System.out.println("");
+//				System.out.println(actor+": ");
+//				System.out.print("History: ");
+//				state.getLogger().forEach((String s) -> {
+//					System.out.print(s+", ");
+//				});
+//				System.out.println("");
 				if (state instanceof StudentPrivateState)
 				{
 					StudentPrivateState casted_student_state=(StudentPrivateState)state;
@@ -141,45 +141,48 @@ public class MySimulatorTest
 		{
 			e.printStackTrace();
 		}
-		//        System.out.println("-----------------Test End------------------");
+//        System.out.println("-----------------Test End------------------");
 	}
-
-	//    private void printCourse(CoursePrivateState state) {
-	//        System.out.print("prequisites: ");
-	//        state.getPrequisites().forEach((String s) -> {
-	//            System.out.print(s + ", ");
-	//        });
-	//        System.out.print('\n' + "students: ");
-	//        state.getRegStudents().forEach((String s) -> {
-	//            System.out.print(s + ", ");
-	//        });
-	//        System.out.print('\n' + "Registered: ");
-	//        System.out.println(state.getRegistered());
-	//        System.out.print("available spaces: ");
-	//        System.out.println(state.getAvailableSpots());
-	//    }
-
-
-	//    private void printStudent(StudentPrivateState state) {
-	//        System.out.print("Grades: ");
-	//        state.getGrades().forEach((String s, Integer grade) -> {
-	//            System.out.print(s + ": " + grade + ", ");
-	//        });
-	//        System.out.print('\n' + "Signature: ");
-	//        System.out.println(state.getSignature());
-	//    }
-
-	//    private void printDepartment(DepartmentPrivateState state) {
-	//        System.out.print("Courses: ");
-	//        state.getCourseList().forEach((String s) -> {
-	//            System.out.print(s + ", ");
-	//        });
-	//        System.out.print('\n' + "Students: ");
-	//        state.getStudentList().forEach((String s) -> {
-	//            System.out.print(s + ", ");
-	//        });
-	//        System.out.println("");
-	//    }
+//
+//	private void printCourse(CoursePrivateState state)
+//	{
+//		System.out.print("prequisites: ");
+//		state.getPrequisites().forEach((String s) -> {
+//			System.out.print(s+", ");
+//		});
+//		System.out.print('\n'+"students: ");
+//		state.getRegStudents().forEach((String s) -> {
+//			System.out.print(s+", ");
+//		});
+//		System.out.print('\n'+"Registered: ");
+//		System.out.println(state.getRegistered());
+//		System.out.print("available spaces: ");
+//		System.out.println(state.getAvailableSpots());
+//	}
+//
+//
+//	private void printStudent(StudentPrivateState state)
+//	{
+//		System.out.print("Grades: ");
+//		state.getGrades().forEach((String s, Integer grade) -> {
+//			System.out.print(s+": "+grade+", ");
+//		});
+//		System.out.print('\n'+"Signature: ");
+//		System.out.println(state.getSignature());
+//	}
+//
+//	private void printDepartment(DepartmentPrivateState state)
+//	{
+//		System.out.print("Courses: ");
+//		state.getCourseList().forEach((String s) -> {
+//			System.out.print(s+", ");
+//		});
+//		System.out.print('\n'+"Students: ");
+//		state.getStudentList().forEach((String s) -> {
+//			System.out.print(s+", ");
+//		});
+//		System.out.println("");
+//	}
 
 	public void testCoursepref1(CoursePrivateState course_state, String course_name)
 	{
@@ -249,7 +252,8 @@ public class MySimulatorTest
 
 	public void testOpenToClose(CoursePrivateState course_state, String course_name)
 	{
-		assertTrue("Nobody should be registered to a course after closed, registered num, course name: "+course_name, course_state.getRegistered()==0);
+		assertTrue("Nobody should be registered to a course after closed, registered num, course name: "+course_name,
+		           course_state.getRegistered()==0);
 		assertTrue("Nobody should be registered to a course after closed, registered list",
 		           course_state.getRegStudents().size()==0);
 		assertTrue("Number of places in a closed course should be -1", course_state.getAvailableSpots()==-1);
